@@ -10,4 +10,5 @@ package Classes;
  */
 public class Teacher {
     public String tecname;
+     public int tecAge;
 }
