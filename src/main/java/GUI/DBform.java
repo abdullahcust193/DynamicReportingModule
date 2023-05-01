@@ -49,7 +49,7 @@ public class DBform extends javax.swing.JFrame {
                     System.out.println("table combo error: " + ex.getMessage());
                 }
             });
-           
+
             tableCombBx.addActionListener(e -> {
                 try {
                     String databaseName = (String) dbCombBox.getSelectedItem();
@@ -118,25 +118,28 @@ public class DBform extends javax.swing.JFrame {
             }
         }
     }
-    
+
     private void fetchTableData(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName;
 
         try (Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+                ResultSet rs = stmt.executeQuery(query)) {
 
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-             DefaultTableModel tbl = (DefaultTableModel) tableDB.getModel();
+            DefaultTableModel tbl = (DefaultTableModel) tableDB.getModel();
             // Clear existing data from the table model
             tbl.setRowCount(0);
-            
+            // Clear existing columns
+            tbl.setColumnCount(0);
             // Get column names
             String[] columnNames = new String[columnCount];
             for (int i = 1; i <= columnCount; i++) {
                 columnNames[i - 1] = rsmd.getColumnName(i);
+                System.out.println("\nColumn Name: " + columnNames[i - 1]);
             }
-            
+            // Set column names in the table model
+            tbl.setColumnIdentifiers(columnNames);
             // Add rows to the table model
             while (rs.next()) {
                 Object[] rowData = new Object[columnCount];
@@ -145,7 +148,7 @@ public class DBform extends javax.swing.JFrame {
                 }
                 tbl.addRow(rowData);
             }
-            
+
         } catch (SQLException ex) {
             System.out.println("Fetch Table Data error: " + ex.getMessage());
         }
@@ -201,15 +204,20 @@ public class DBform extends javax.swing.JFrame {
 
         tableDB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "", "", "", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tableDB);
 
         showDataBtn.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
@@ -257,10 +265,10 @@ public class DBform extends javax.swing.JFrame {
                     .addComponent(tableCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(columnCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
-                .addComponent(showDataBtn)
+                .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(272, 272, 272))
+                .addGap(261, 261, 261))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -290,16 +298,16 @@ public class DBform extends javax.swing.JFrame {
     private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
         // TODO add your handling code here:
         showDataBtn.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    try {
-                        String tableName = (String) tableCombBx.getSelectedItem();
-                        fetchTableData(tableName);
-                    } catch (SQLException ex) {
-                        System.out.println("Show Data Button error: " + ex.getMessage());
-                    }
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    String tableName = (String) tableCombBx.getSelectedItem();
+                    fetchTableData(tableName);
+                } catch (SQLException ex) {
+                    System.out.println("Show Data Button error: " + ex.getMessage());
                 }
-            });
+            }
+        });
     }//GEN-LAST:event_showDataBtnActionPerformed
 
     public static void main(String args[]) {
