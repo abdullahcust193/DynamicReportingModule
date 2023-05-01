@@ -2,12 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package GUI;
+package DR_GUI;
 
 import Classes.Student;
 import Controller.StudentController;
 import DBController.DBConnect;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import static java.lang.Integer.parseInt;
 import java.sql.Connection;
@@ -40,10 +41,10 @@ import org.jfree.data.general.DefaultPieDataset;
  *
  * @author chabd
  */
-public class NewJFrame1 extends javax.swing.JFrame {
+public class SpecificReportTab extends javax.swing.JFrame {
 
     /**
-     * Creates new form NewJFrame1
+     * Creates new form SpecificReportTab
      */
     private Student s;
     private Connection conn = null;
@@ -52,7 +53,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
     private String selectedDb;
     private String selectedTable;
 
-    public NewJFrame1() {
+    public SpecificReportTab() {
         initComponents();
 
         try {
@@ -68,35 +69,38 @@ public class NewJFrame1 extends javax.swing.JFrame {
     }
 
     public void loadReport() throws SQLException {
+    HashMap<String, Object> parameter = new HashMap<>();
+    parameter.put("newID", txt_id.getText());
+    panael.removeAll();
+    panael.repaint();
+    panael.revalidate();
 
-        HashMap parameter = new HashMap();
-        parameter.put("newID", txt_id.getText());
-        panael.removeAll();
-        panael.repaint();
-        panael.revalidate();
+    try {
+        JasperDesign jd;
+        jd = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\Reports\\report3.jrxml");
+        String sql = "SELECT `id`, `name`, `age`, `registration_no` FROM `home` WHERE id='" + txt_id.getText() + "'";
+        JRDesignQuery newQuery = new JRDesignQuery();
+        newQuery.setText(sql);
+        jd.setQuery(newQuery);
 
-        try {
-          
-            JasperDesign jd;
-            jd = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\NetBeansProjects\\DynamicReporting\\src\\main\\java\\Reports\\report3.jrxml");
-            String sql = "SELECT `id`, `name`, `age`, `registration_no` FROM `home` WHERE id='"+txt_id.getText()+"'";
-            JRDesignQuery newQuery=new JRDesignQuery();
-            newQuery.setText(sql);
-            jd.setQuery(newQuery);
-            
-            
-      
-            JasperReport jp = JasperCompileManager.compileReport(jd);
-            JasperPrint jprint = JasperFillManager.fillReport(jp, parameter, conn);
-            JRViewer viewReport = new JRViewer(jprint);
-            panael.setLayout(new BorderLayout());
-            panael.add(viewReport);
+        JasperReport jp = JasperCompileManager.compileReport(jd);
+        JasperPrint jprint = JasperFillManager.fillReport(jp, parameter, conn);
+        JRViewer viewReport = new JRViewer(jprint);
 
-        } catch (JRException ex) {
-            System.out.println("\nJasper Error:" + ex.getMessage());
-        }
+        // Set the preferred size of the panel
+        int panelWidth = 800; // Set the desired width
+        int panelHeight = 800; // Set the desired height
+        panael.setPreferredSize(new Dimension(panelWidth, panelHeight));
 
+        // Use an appropriate layout manager to control the size of the report viewer
+        panael.setLayout(new BorderLayout());
+        panael.add(viewReport, BorderLayout.CENTER);
+
+    } catch (JRException ex) {
+        System.out.println("\nJasper Error: " + ex.getMessage());
     }
+}
+
 
     public void updateTable() {
 
@@ -1178,7 +1182,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 753, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 419, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(179, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1212,7 +1216,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
             registrationTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(registrationTabLayout.createSequentialGroup()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 299, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbed1.addTab("Registeration", registrationTab);
@@ -1259,13 +1263,11 @@ public class NewJFrame1 extends javax.swing.JFrame {
         studentRecordTab.setLayout(studentRecordTabLayout);
         studentRecordTabLayout.setHorizontalGroup(
             studentRecordTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1380, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1227, Short.MAX_VALUE)
         );
         studentRecordTabLayout.setVerticalGroup(
             studentRecordTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(studentRecordTabLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 668, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 953, Short.MAX_VALUE)
         );
 
         jTabbed1.addTab("Student Records", studentRecordTab);
@@ -1505,7 +1507,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
                             .addComponent(jTabbedPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(18, 18, 18)
                             .addComponent(jTabbedPane5))))
-                .addContainerGap(600, Short.MAX_VALUE))
+                .addContainerGap(447, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1518,7 +1520,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
                 .addComponent(jTabbedPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(568, Short.MAX_VALUE))
+                .addContainerGap(269, Short.MAX_VALUE))
         );
 
         generalReportTab.addTab("", jPanel7);
@@ -1527,16 +1529,17 @@ public class NewJFrame1 extends javax.swing.JFrame {
 
         panael.setBackground(new java.awt.Color(204, 204, 204));
         panael.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panael.setPreferredSize(new java.awt.Dimension(800, 800));
 
         javax.swing.GroupLayout panaelLayout = new javax.swing.GroupLayout(panael);
         panael.setLayout(panaelLayout);
         panaelLayout.setHorizontalGroup(
             panaelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1011, Short.MAX_VALUE)
+            .addGap(0, 806, Short.MAX_VALUE)
         );
         panaelLayout.setVerticalGroup(
             panaelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1006, Short.MAX_VALUE)
+            .addGap(0, 794, Short.MAX_VALUE)
         );
 
         idLabel.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -1567,8 +1570,8 @@ public class NewJFrame1 extends javax.swing.JFrame {
                         .addComponent(ReportBtn))
                     .addGroup(printStudentTabLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(panael, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(326, Short.MAX_VALUE))
+                        .addComponent(panael, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(378, Short.MAX_VALUE))
         );
         printStudentTabLayout.setVerticalGroup(
             printStudentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1580,7 +1583,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
                     .addComponent(ReportBtn))
                 .addGap(18, 18, 18)
                 .addComponent(panael, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(153, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbed1.addTab("Print Student Record", printStudentTab);
@@ -1593,7 +1596,9 @@ public class NewJFrame1 extends javax.swing.JFrame {
         );
         mainFrameLayout.setVerticalGroup(
             mainFrameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbed1)
+            .addGroup(mainFrameLayout.createSequentialGroup()
+                .addComponent(jTabbed1, javax.swing.GroupLayout.PREFERRED_SIZE, 782, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -1606,7 +1611,9 @@ public class NewJFrame1 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(mainFrame, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(mainFrame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -1959,20 +1966,21 @@ public class NewJFrame1 extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SpecificReportTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SpecificReportTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SpecificReportTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NewJFrame1.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SpecificReportTab.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new NewJFrame1().setVisible(true);
+                new SpecificReportTab().setVisible(true);
             }
         });
     }
