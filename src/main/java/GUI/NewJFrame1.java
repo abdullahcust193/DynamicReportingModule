@@ -155,26 +155,7 @@ public class NewJFrame1 extends javax.swing.JFrame {
         }
 
     }
-
-    public void loginDb_tables() {
-
-        try {
-            DatabaseMetaData metaData;
-            metaData = conn.getMetaData();
-            ResultSet tables = metaData.getTables("login", null, null, null);
-            while (tables.next()) {
-                String table_name = tables.getString("Table_NAME");
-                ComboBox_table.addItem(table_name);
-                System.out.println("Table name: " + tables.getString("Table_NAME"));
-
-            }
-        } catch (SQLException ex) {
-            System.out.println("SQL Exception: " + ex.getMessage());
-        }
-
-    }
-
-    public void viewHomeTable() {
+ public void viewHomeTable() {
 
         try {
             conn = (Connection) DBConnect.connect();
@@ -202,6 +183,25 @@ public class NewJFrame1 extends javax.swing.JFrame {
             System.out.println("\n Error:" + ex.getMessage());
         }
     }
+    public void loginDb_tables() {
+
+        try {
+            DatabaseMetaData metaData;
+            metaData = conn.getMetaData();
+            ResultSet tables = metaData.getTables("login", null, null, null);
+            while (tables.next()) {
+                String table_name = tables.getString("Table_NAME");
+                ComboBox_table.addItem(table_name);
+                System.out.println("Table name: " + tables.getString("Table_NAME"));
+
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQL Exception: " + ex.getMessage());
+        }
+
+    }
+
+   
 
     public void viewAdminTable() {
 
