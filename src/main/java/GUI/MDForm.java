@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import DR_GUI.DBform;
 import Classes.Student;
 import Controller.StudentController;
 import DBController.DBConnect;
