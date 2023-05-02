@@ -1,5 +1,6 @@
 package DR_GUI;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.sql.*;
@@ -168,6 +169,7 @@ public class DBform extends javax.swing.JFrame {
 
         DefaultTableModel selectedColumnsTableModel = (DefaultTableModel) table2.getModel();
         selectedColumnsTableModel.setRowCount(0);
+        selectedColumnsTableModel.setColumnCount(0); // Clear column headers
         List<String> selectedColumns = new ArrayList<>();
         for (Component c : chckboxPanel.getComponents()) {
             if (c instanceof JCheckBox) {
@@ -287,6 +289,7 @@ public class DBform extends javax.swing.JFrame {
         columnCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the column" }));
         columnCombBx.setMinimumSize(new java.awt.Dimension(157, 31));
 
+        tableDB.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         tableDB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -301,6 +304,11 @@ public class DBform extends javax.swing.JFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableDB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableDBMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tableDB);
@@ -349,13 +357,13 @@ public class DBform extends javax.swing.JFrame {
             }
         });
 
-        table2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        table2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         table2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "", "", "", ""
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -491,6 +499,18 @@ public class DBform extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_selectColumnsBtnActionPerformed
+
+    private void tableDBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDBMouseClicked
+        // TODO add your handling code here:
+
+        int row = tableDB.getSelectedRow();
+        if (row >= 0) {
+            tableDB.setSelectionBackground(Color.YELLOW);
+            tableDB.setSelectionForeground(Color.BLACK);
+        }
+
+
+    }//GEN-LAST:event_tableDBMouseClicked
 
     public static void main(String args[]) {
 
