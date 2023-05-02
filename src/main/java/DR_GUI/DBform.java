@@ -10,8 +10,11 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -217,25 +220,67 @@ public class DBform extends javax.swing.JFrame {
         }
     }
 
-    private void generateReport() throws SQLException {
+    private void generateReport(String tableName, String dbName) throws SQLException {
         try {
-            // Get the selected table name and column name
-            String tableName = (String) tableCombBx.getSelectedItem();
-            String columnName = (String) columnCombBx.getSelectedItem();
-            // Fetch the data for the selected table
-            fetchTableData(tableName);
-            // Create a JasperReport object by loading the report file
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\Reports\\report4.jasper");
-            // Create a map of parameters to pass to the report
-            Map<String, Object> parameters = new HashMap<>();
-            parameters.put("ColumnName", columnName);
-            // Create a JasperPrint object using the filled report and the data source
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRTableModelDataSource(tableDB.getModel()));
-            // Display the report in JasperViewer
-            JasperViewer.viewReport(jasperPrint, false);
-        } catch (JRException ex) {
-            ex.printStackTrace();
-            System.out.println("Report Generation Error: " + ex.getMessage());
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/" + dbName, "root", "");
+
+            // Get selected columns from the database
+            List<String> selectedColumns = new ArrayList<>();
+            for (Component c : chckboxPanel.getComponents()) {
+                if (c instanceof JCheckBox) {
+                    JCheckBox checkbox = (JCheckBox) c;
+                    if (checkbox.isSelected()) {
+                        selectedColumns.add(checkbox.getText());
+                    }
+                }
+            }
+            if (selectedColumns.isEmpty()) {
+                System.out.println("CheckBox Not Selected.");
+                return;
+            }
+
+            // Generate SELECT statement
+            String selectClause = "SELECT ";
+            for (String column : selectedColumns) {
+                selectClause += column + ",";
+            }
+            selectClause = selectClause.substring(0, selectClause.length() - 1);
+
+// Generate FROM statement
+            String fromClause = "FROM " + tableName;
+
+// Generate WHERE statement
+            String whereClause = "WHERE ";
+            for (Component c : chckboxPanel.getComponents()) {
+                if (c instanceof JCheckBox) {
+                    JCheckBox checkbox = (JCheckBox) c;
+                    if (checkbox.isSelected()) {
+                        String columnName = checkbox.getText();
+                        whereClause += columnName + " = true AND ";
+                    }
+                }
+            }
+            if (whereClause.endsWith("AND ")) {
+                whereClause = whereClause.substring(0, whereClause.length() - 4);
+            }
+
+// Combine the clauses into a single query
+            String query = selectClause + " " + fromClause + " " + whereClause;
+
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
+            JasperCompileManager.compileReportToFile("report1.jrxml"); // compile the report template
+
+            Map<String, Object> parameters = new HashMap<String, Object>(); // create a map to store the report parameters
+
+            JasperPrint jasperPrint = JasperFillManager.fillReport("report1.jasper", parameters, new JRResultSetDataSource(rs)); // fill the report template with the data
+
+            JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperViewer
+
+            conn.close();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
 
@@ -483,7 +528,9 @@ public class DBform extends javax.swing.JFrame {
         printButton.addActionListener((ActionEvent e) -> {
             try {
                 // Handle print button click event
-                generateReport();
+                String tableName = (String) tableCombBx.getSelectedItem();
+                String dbName = (String) dbCombBox.getSelectedItem();
+                generateReport(tableName, dbName);
             } catch (SQLException ex) {
                 System.out.println("Error Print Button EventL: " + ex.getMessage());
             }
@@ -505,7 +552,7 @@ public class DBform extends javax.swing.JFrame {
 
         int row = tableDB.getSelectedRow();
         if (row >= 0) {
-            tableDB.setSelectionBackground(Color.YELLOW);
+            tableDB.setSelectionBackground(Color.GRAY);
             tableDB.setSelectionForeground(Color.BLACK);
         }
 
