@@ -1136,7 +1136,7 @@ public class MDForm extends javax.swing.JFrame {
         // Print Button code here:
         try {
 
-            JasperDesign jd = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\NetBeansProjects\\DynamicReporting\\src\\main\\java\\Reports\\report1.jrxml");
+            JasperDesign jd = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\Reports\\report1.jrxml");
             String qury = "select * from home order by id asc";
 
             JRDesignQuery updateQuery = new JRDesignQuery();

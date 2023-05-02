@@ -23,20 +23,15 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panel1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+          <Group type="102" alignment="0" attributes="0">
+              <Component id="panel1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="panel1" max="32767" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
+          <Component id="panel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -59,14 +54,14 @@
                               <Component id="showdb1" min="-2" pref="154" max="-2" attributes="0"/>
                               <Component id="dbCombBox" min="-2" pref="238" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="showTables1" min="-2" pref="154" max="-2" attributes="0"/>
                               <Component id="tableCombBx" min="-2" pref="238" max="-2" attributes="0"/>
+                              <Component id="showTables1" min="-2" pref="154" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="columnCombBx" min="-2" pref="321" max="-2" attributes="0"/>
+                              <Component id="columnCombBx" min="-2" pref="310" max="-2" attributes="0"/>
                               <Component id="showTables" min="-2" pref="132" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -81,11 +76,11 @@
                               <Component id="jScrollPane1" alignment="0" max="32767" attributes="0"/>
                               <Component id="selectColumnsBtn" alignment="1" min="-2" pref="160" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="chckboxPanel" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="288" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="270" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -98,23 +93,25 @@
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="showdb1" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="showTables1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="showTables" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="dbCombBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tableCombBx" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="columnCombBx" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jScrollPane1" min="-2" pref="210" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="chckboxPanel" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="showTables" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="dbCombBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="tableCombBx" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="columnCombBx" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane1" min="-2" pref="210" max="-2" attributes="0"/>
+                      <Component id="chckboxPanel" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="printButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="showDataBtn" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -278,7 +275,7 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="302" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="306" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
