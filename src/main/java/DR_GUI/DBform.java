@@ -1,7 +1,7 @@
 package DR_GUI;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -25,20 +24,19 @@ public class DBform extends javax.swing.JFrame {
     private String databasename;
     private String tablename;
     private DefaultTableModel tableModel;
-    private JPanel checkboxesPanel; // declare JPanel to hold checkboxes
 
     public DBform() {
+
         initComponents();
+
         String url = "jdbc:mysql://localhost:3307/";
         String user = "root";
         String password = "";
-        // initialize the checkboxesPanel
-        checkboxesPanel = new JPanel();
         chckboxPanel.setLayout(new BoxLayout(chckboxPanel, BoxLayout.Y_AXIS));
+
         try {
             conn = DriverManager.getConnection(url, user, password);
             List<String> databaseList = getDatabaseList();
-
             System.out.println("\nDatabase List:");
             for (String dbName : databaseList) {
                 System.out.println(dbName);
@@ -49,16 +47,16 @@ public class DBform extends javax.swing.JFrame {
                 try {
                     String databaseName = (String) dbCombBox.getSelectedItem();
                     List<String> tableArray = getTableList(databaseName);
-
                     tableCombBx.removeAllItems();
                     System.out.println("\nTables in " + databaseName + " database:");
+
                     for (String tableName : tableArray) {
                         System.out.println(tableName);
                         tableCombBx.addItem(tableName);
                     }
-                } catch (SQLException ex) {
 
-                    System.out.println("table combo error: " + ex.getMessage());
+                } catch (SQLException ex) {
+                    System.out.println("\nError with Fetching Tables in ComboBox: " + ex.getMessage());
                 }
             });
 
@@ -73,14 +71,12 @@ public class DBform extends javax.swing.JFrame {
                     getColumns(tableName);
 
                 } catch (SQLException ex) {
-                    ex.printStackTrace();
-                    System.out.println("Column Combobox error: " + ex.getMessage());
+                    System.out.println("\nError with Fetching Column in ComboBox: " + ex.getMessage());
                 }
             });
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Main Error: " + e.getMessage());
+            System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
 
     }
@@ -112,7 +108,6 @@ public class DBform extends javax.swing.JFrame {
     }
 
     public void getColumns(String tableName) throws SQLException {
-
         // clear the checkboxesPanel before adding new checkboxes
         chckboxPanel.removeAll();
         String query = "SELECT * from " + tableName;
@@ -129,7 +124,6 @@ public class DBform extends javax.swing.JFrame {
                 System.out.println("\n");
                 columnName = rsmd.getColumnName(i);
                 columnCombBx.addItem(columnName);
-
                 JCheckBox checkbox = new JCheckBox(columnName);
                 chckboxPanel.add(checkbox);
             }
@@ -138,7 +132,6 @@ public class DBform extends javax.swing.JFrame {
 
     private void fetchTableData(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName;
-
         try (Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query)) {
 
@@ -171,25 +164,71 @@ public class DBform extends javax.swing.JFrame {
         }
     }
 
+    public void fetchSelectedColumnsData(String tablename) {
+
+        DefaultTableModel selectedColumnsTableModel = (DefaultTableModel) table2.getModel();
+        selectedColumnsTableModel.setRowCount(0);
+        List<String> selectedColumns = new ArrayList<>();
+        for (Component c : chckboxPanel.getComponents()) {
+            if (c instanceof JCheckBox) {
+                JCheckBox checkbox = (JCheckBox) c;
+                if (checkbox.isSelected()) {
+                    selectedColumns.add(checkbox.getText());
+                }
+            }
+        }
+        if (selectedColumns.isEmpty()) {
+            System.out.println("CheckBox Not Selected.");
+            selectedColumnsTableModel.setRowCount(0);
+            return;
+        }
+        String query = "SELECT ";
+        for (String column : selectedColumns) {
+            query += column + ",";
+        }
+
+        query = query.substring(0, query.length() - 1);
+        query += " FROM " + tablename;
+
+        try (Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            // Get column names
+            String[] columnNames = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames[i - 1] = rsmd.getColumnName(i);
+            }
+            // Set column names in the table model
+            selectedColumnsTableModel.setColumnIdentifiers(columnNames);
+            // Add rows to the table model
+            while (rs.next()) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                selectedColumnsTableModel.addRow(rowData);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error in Select Colums fUCNN: " + e.getMessage());
+        }
+    }
+
     private void generateReport() throws SQLException {
         try {
             // Get the selected table name and column name
             String tableName = (String) tableCombBx.getSelectedItem();
             String columnName = (String) columnCombBx.getSelectedItem();
-
             // Fetch the data for the selected table
             fetchTableData(tableName);
-
             // Create a JasperReport object by loading the report file
             JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\Reports\\report4.jasper");
-
             // Create a map of parameters to pass to the report
             Map<String, Object> parameters = new HashMap<>();
             parameters.put("ColumnName", columnName);
-
             // Create a JasperPrint object using the filled report and the data source
             JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, new JRTableModelDataSource(tableDB.getModel()));
-
             // Display the report in JasperViewer
             JasperViewer.viewReport(jasperPrint, false);
         } catch (JRException ex) {
@@ -213,9 +252,9 @@ public class DBform extends javax.swing.JFrame {
         showDataBtn = new javax.swing.JButton();
         printButton = new javax.swing.JButton();
         chckboxPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        selectColumnsBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        dbtable2 = new javax.swing.JTable();
+        table2 = new javax.swing.JTable();
         showTables = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -299,14 +338,19 @@ public class DBform extends javax.swing.JFrame {
             .addGap(0, 0, Short.MAX_VALUE)
         );
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 0, 255));
-        jButton1.setText("Show Record");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.setPreferredSize(new java.awt.Dimension(87, 27));
+        selectColumnsBtn.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
+        selectColumnsBtn.setForeground(new java.awt.Color(0, 0, 255));
+        selectColumnsBtn.setText("Show Record");
+        selectColumnsBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        selectColumnsBtn.setPreferredSize(new java.awt.Dimension(87, 27));
+        selectColumnsBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectColumnsBtnActionPerformed(evt);
+            }
+        });
 
-        dbtable2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        dbtable2.setModel(new javax.swing.table.DefaultTableModel(
+        table2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        table2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -322,7 +366,7 @@ public class DBform extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(dbtable2);
+        jScrollPane2.setViewportView(table2);
 
         showTables.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         showTables.setText("Select Columns");
@@ -334,7 +378,7 @@ public class DBform extends javax.swing.JFrame {
             .addGroup(panel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, panel1Layout.createSequentialGroup()
@@ -386,7 +430,7 @@ public class DBform extends javax.swing.JFrame {
                 .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(73, Short.MAX_VALUE))
         );
 
@@ -416,33 +460,37 @@ public class DBform extends javax.swing.JFrame {
 
     private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
         // TODO add your handling code here:
-        showDataBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    String tableName = (String) tableCombBx.getSelectedItem();
-                    fetchTableData(tableName);
-                } catch (SQLException ex) {
-                    System.out.println("Show Data Button error: " + ex.getMessage());
-                }
+        showDataBtn.addActionListener((ActionEvent e) -> {
+            try {
+                String tableName = (String) tableCombBx.getSelectedItem();
+                fetchTableData(tableName);
+            } catch (SQLException ex) {
+                System.out.println("Show Data Button error: " + ex.getMessage());
             }
         });
     }//GEN-LAST:event_showDataBtnActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:
-        printButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    // Handle print button click event
-                    generateReport();
-                } catch (SQLException ex) {
-                    System.out.println("Error Print Button EventL: " + ex.getMessage());
-                }
+        printButton.addActionListener((ActionEvent e) -> {
+            try {
+                // Handle print button click event
+                generateReport();
+            } catch (SQLException ex) {
+                System.out.println("Error Print Button EventL: " + ex.getMessage());
             }
         });
     }//GEN-LAST:event_printButtonActionPerformed
+
+    private void selectColumnsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectColumnsBtnActionPerformed
+        // TODO add your handling code here:
+        selectColumnsBtn.addActionListener((ActionEvent e) -> {
+            String tableName = (String) tableCombBx.getSelectedItem();
+            fetchSelectedColumnsData(tableName);
+        });
+
+
+    }//GEN-LAST:event_selectColumnsBtnActionPerformed
 
     public static void main(String args[]) {
 
@@ -457,16 +505,16 @@ public class DBform extends javax.swing.JFrame {
     private javax.swing.JPanel chckboxPanel;
     private javax.swing.JComboBox<String> columnCombBx;
     private javax.swing.JComboBox<String> dbCombBox;
-    private javax.swing.JTable dbtable2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JPanel panel1;
     private javax.swing.JButton printButton;
+    private javax.swing.JButton selectColumnsBtn;
     private javax.swing.JButton showDataBtn;
     private javax.swing.JLabel showTables;
     private javax.swing.JLabel showTables1;
     private javax.swing.JLabel showdb1;
+    private javax.swing.JTable table2;
     private javax.swing.JComboBox<String> tableCombBx;
     private javax.swing.JTable tableDB;
     // End of variables declaration//GEN-END:variables
