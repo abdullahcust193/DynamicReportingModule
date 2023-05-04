@@ -63,7 +63,7 @@ public class DBform extends javax.swing.JFrame {
                     System.out.println("\nError with Fetching Tables in ComboBox: " + ex.getMessage());
                 }
             });
-
+  
             tableCombBx.addActionListener(e -> {
                 try {
                     String databaseName = (String) dbCombBox.getSelectedItem();
@@ -333,6 +333,11 @@ public class DBform extends javax.swing.JFrame {
         columnCombBx.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         columnCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the column" }));
         columnCombBx.setMinimumSize(new java.awt.Dimension(157, 31));
+        columnCombBx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                columnCombBxActionPerformed(evt);
+            }
+        });
 
         tableDB.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         tableDB.setModel(new javax.swing.table.DefaultTableModel(
@@ -384,7 +389,7 @@ public class DBform extends javax.swing.JFrame {
         chckboxPanel.setLayout(chckboxPanelLayout);
         chckboxPanelLayout.setHorizontalGroup(
             chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 438, Short.MAX_VALUE)
+            .addGap(0, 451, Short.MAX_VALUE)
         );
         chckboxPanelLayout.setVerticalGroup(
             chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -452,12 +457,11 @@ public class DBform extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)))
                 .addGap(18, 18, 18)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(chckboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(chckboxPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addComponent(showTables, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(335, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -480,11 +484,11 @@ public class DBform extends javax.swing.JFrame {
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(printButton)
                     .addComponent(showDataBtn))
-                .addGap(27, 27, 27)
+                .addGap(26, 26, 26)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(73, Short.MAX_VALUE))
+                .addContainerGap(164, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -558,6 +562,11 @@ public class DBform extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_tableDBMouseClicked
+    
+
+    private void columnCombBxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnCombBxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_columnCombBxActionPerformed
 
     public static void main(String args[]) {
 
