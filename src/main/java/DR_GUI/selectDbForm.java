@@ -58,6 +58,11 @@ public class selectDbForm extends javax.swing.JFrame {
         return dbComboBox.getSelectedItem().toString();
     }
 
+    private void databaseSelected(String dbName) {
+        select_form.setDatabaseName(dbName);
+        dispose();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -98,9 +103,9 @@ public class selectDbForm extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(126, 126, 126)
+                .addGap(91, 91, 91)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(dbComboBox, 0, 155, Short.MAX_VALUE)
+                    .addComponent(dbComboBox, 0, 190, Short.MAX_VALUE)
                     .addComponent(dbDoneBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(119, Short.MAX_VALUE))
         );
@@ -128,10 +133,7 @@ public class selectDbForm extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    private void databaseSelected(String dbName) {
-        select_form.setDatabaseName(dbName);
-        dispose();
-    }
+
     private void dbDoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbDoneBtnActionPerformed
 
         String dbNAme = (String) dbComboBox.getSelectedItem();

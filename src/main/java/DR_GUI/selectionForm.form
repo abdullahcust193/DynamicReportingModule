@@ -57,7 +57,10 @@
                       <Component id="selectDbBtn" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="selectTableBtn" min="-2" pref="166" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="selectTableBtn" max="32767" attributes="0"/>
+                      <Component id="tblSelectMsg" pref="166" max="32767" attributes="0"/>
+                  </Group>
                   <EmptySpace pref="338" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -74,8 +77,11 @@
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="dbSelectMsg" min="-2" pref="26" max="-2" attributes="0"/>
-                  <EmptySpace pref="303" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="tblSelectMsg" max="32767" attributes="0"/>
+                      <Component id="dbSelectMsg" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="313" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -95,9 +101,8 @@
         <Component class="javax.swing.JLabel" name="dbSelectMsg">
           <Properties>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="33" green="0" red="ff" type="rgb"/>
+              <Color blue="0" green="0" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="*********"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="selectTableBtn">
@@ -110,6 +115,14 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="selectTableBtnActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="tblSelectMsg">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" red="ff" type="rgb"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="******************************"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

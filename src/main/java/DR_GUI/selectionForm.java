@@ -11,9 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class selectionForm extends javax.swing.JFrame {
 
-    private Connection conn;
-    private String databasename;
-    private String tablename;
+    private String tableName = "";
     private DefaultTableModel tableModel;
     public String dbName = "";
 
@@ -24,12 +22,23 @@ public class selectionForm extends javax.swing.JFrame {
     public void setDatabaseName(String dbN) {
         dbName = dbN;
         dbSelectMsg.setText(dbN);
-        System.out.println("DB Name get from second from: " + dbName);
+        System.out.println("DB Name get from Db from: " + dbName);
+    }
+
+    public void setTableName(String tblName) {
+        tableName = tblName;
+        tblSelectMsg.setText(tblName);
+        System.out.println("Table Name get from Table from: " + tableName);
     }
 
     private void openDbForm() {
         selectDbForm showdbs = new selectDbForm(this);
         showdbs.setVisible(true);
+    }
+
+    private void openTableForm() {
+        selectTableForm sTableForm = new selectTableForm(this,dbName);
+        sTableForm.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -40,6 +49,7 @@ public class selectionForm extends javax.swing.JFrame {
         selectDbBtn = new javax.swing.JButton();
         dbSelectMsg = new javax.swing.JLabel();
         selectTableBtn = new javax.swing.JButton();
+        tblSelectMsg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -53,8 +63,7 @@ public class selectionForm extends javax.swing.JFrame {
             }
         });
 
-        dbSelectMsg.setForeground(new java.awt.Color(255, 0, 51));
-        dbSelectMsg.setText("*********");
+        dbSelectMsg.setForeground(new java.awt.Color(255, 0, 0));
 
         selectTableBtn.setText("Select Table");
         selectTableBtn.setPreferredSize(new java.awt.Dimension(129, 29));
@@ -63,6 +72,9 @@ public class selectionForm extends javax.swing.JFrame {
                 selectTableBtnActionPerformed(evt);
             }
         });
+
+        tblSelectMsg.setForeground(new java.awt.Color(255, 0, 0));
+        tblSelectMsg.setText("******************************");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -74,7 +86,9 @@ public class selectionForm extends javax.swing.JFrame {
                     .addComponent(dbSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
                     .addComponent(selectDbBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(selectTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
                 .addContainerGap(338, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -87,8 +101,10 @@ public class selectionForm extends javax.swing.JFrame {
                         .addComponent(selectTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(1, 1, 1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dbSelectMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(303, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(dbSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(313, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -119,9 +135,8 @@ public class selectionForm extends javax.swing.JFrame {
 
     private void selectTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTableBtnActionPerformed
         // TODO add your handling code here:
-//        openTableForm();
-        selectTableForm sTableForm = new selectTableForm(dbName);
-        sTableForm.setVisible(true);
+        openTableForm();
+
     }//GEN-LAST:event_selectTableBtnActionPerformed
 
     public static void main(String args[]) {
@@ -138,5 +153,6 @@ public class selectionForm extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton selectDbBtn;
     private javax.swing.JButton selectTableBtn;
+    private javax.swing.JLabel tblSelectMsg;
     // End of variables declaration//GEN-END:variables
 }
