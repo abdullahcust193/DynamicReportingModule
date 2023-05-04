@@ -22,12 +22,12 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     public void setDatabaseName(String dbN) {
-        dbName=dbN;
+        dbName = dbN;
         dbSelectMsg.setText(dbN);
-        System.out.println("DB Name get from second from: "+dbName);
+        System.out.println("DB Name get from second from: " + dbName);
     }
 
-    private void openSecondForm() {
+    private void openDbForm() {
         selectDbForm showdbs = new selectDbForm(this);
         showdbs.setVisible(true);
     }
@@ -37,24 +37,32 @@ public class selectionForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        selectdbBtn = new javax.swing.JButton();
+        selectDbBtn = new javax.swing.JButton();
         dbSelectMsg = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        selectTableBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        selectdbBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        selectdbBtn.setText("Select Database");
-        selectdbBtn.addActionListener(new java.awt.event.ActionListener() {
+        jPanel1.setName("*********"); // NOI18N
+
+        selectDbBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        selectDbBtn.setText("Select Database");
+        selectDbBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                selectdbBtnActionPerformed(evt);
+                selectDbBtnActionPerformed(evt);
             }
         });
 
         dbSelectMsg.setForeground(new java.awt.Color(255, 0, 51));
+        dbSelectMsg.setText("*********");
 
-        jButton1.setText("Select Table");
-        jButton1.setPreferredSize(new java.awt.Dimension(129, 29));
+        selectTableBtn.setText("Select Table");
+        selectTableBtn.setPreferredSize(new java.awt.Dimension(129, 29));
+        selectTableBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectTableBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -64,9 +72,9 @@ public class selectionForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(dbSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE)
-                    .addComponent(selectdbBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(selectDbBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(338, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -74,13 +82,13 @@ public class selectionForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(selectdbBtn)
+                    .addComponent(selectDbBtn)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(selectTableBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(1, 1, 1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(dbSelectMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 0, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(329, Short.MAX_VALUE))
+                .addComponent(dbSelectMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(303, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -98,14 +106,23 @@ public class selectionForm extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
+        jPanel1.getAccessibleContext().setAccessibleName("");
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void selectdbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectdbBtnActionPerformed
+    private void selectDbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDbBtnActionPerformed
 
-        openSecondForm();
-    }//GEN-LAST:event_selectdbBtnActionPerformed
+        openDbForm();
+    }//GEN-LAST:event_selectDbBtnActionPerformed
+
+    private void selectTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTableBtnActionPerformed
+        // TODO add your handling code here:
+//        openTableForm();
+        selectTableForm sTableForm = new selectTableForm(dbName);
+        sTableForm.setVisible(true);
+    }//GEN-LAST:event_selectTableBtnActionPerformed
 
     public static void main(String args[]) {
 
@@ -118,8 +135,8 @@ public class selectionForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel dbSelectMsg;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton selectdbBtn;
+    private javax.swing.JButton selectDbBtn;
+    private javax.swing.JButton selectTableBtn;
     // End of variables declaration//GEN-END:variables
 }

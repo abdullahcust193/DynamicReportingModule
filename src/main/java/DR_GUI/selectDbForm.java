@@ -16,8 +16,6 @@ import javax.swing.JOptionPane;
 public class selectDbForm extends javax.swing.JFrame {
 
     private Connection conn;
-    private String databasename;
-    private String tablename;
     private selectionForm select_form;
 
     public selectDbForm(selectionForm select_form) {
@@ -34,7 +32,7 @@ public class selectDbForm extends javax.swing.JFrame {
             System.out.println("\nDatabase List:");
             for (String dbName : databaseList) {
                 System.out.println(dbName);
-                dbCom.addItem(dbName);
+                dbComboBox.addItem(dbName);
             }
 
         } catch (SQLException e) {
@@ -56,6 +54,10 @@ public class selectDbForm extends javax.swing.JFrame {
         return databaseList;
     }
 
+    public String getSelectedComboBoxItem() {
+        return dbComboBox.getSelectedItem().toString();
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -63,8 +65,8 @@ public class selectDbForm extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        dbCom = new javax.swing.JComboBox<>();
-        OKbtn = new javax.swing.JButton();
+        dbComboBox = new javax.swing.JComboBox<>();
+        dbDoneBtn = new javax.swing.JButton();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -81,12 +83,13 @@ public class selectDbForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        dbCom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Database" }));
+        dbComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Database" }));
 
-        OKbtn.setText("OK");
-        OKbtn.addActionListener(new java.awt.event.ActionListener() {
+        dbDoneBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        dbDoneBtn.setText("Done");
+        dbDoneBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OKbtnActionPerformed(evt);
+                dbDoneBtnActionPerformed(evt);
             }
         });
 
@@ -96,19 +99,19 @@ public class selectDbForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(126, 126, 126)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dbCom, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(OKbtn, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(dbComboBox, 0, 155, Short.MAX_VALUE)
+                    .addComponent(dbDoneBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(119, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(107, 107, 107)
-                .addComponent(dbCom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(OKbtn)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addComponent(dbComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(dbDoneBtn)
+                .addContainerGap(133, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -129,15 +132,14 @@ public class selectDbForm extends javax.swing.JFrame {
         select_form.setDatabaseName(dbName);
         dispose();
     }
-    private void OKbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKbtnActionPerformed
+    private void dbDoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbDoneBtnActionPerformed
 
-        String dbNAme = (String) dbCom.getSelectedItem();
+        String dbNAme = (String) dbComboBox.getSelectedItem();
         System.out.println("Database Selected : " + dbNAme);
         JOptionPane.showMessageDialog(selectDbForm.this, "Selected Database : " + dbNAme);
         select_form.setDatabaseName(dbNAme);
-//  databaseSelected(dbNAme);
         this.dispose();
-    }//GEN-LAST:event_OKbtnActionPerformed
+    }//GEN-LAST:event_dbDoneBtnActionPerformed
 
     public static void main(String args[]) {
 
@@ -149,8 +151,8 @@ public class selectDbForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton OKbtn;
-    public javax.swing.JComboBox<String> dbCom;
+    public javax.swing.JComboBox<String> dbComboBox;
+    private javax.swing.JButton dbDoneBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
