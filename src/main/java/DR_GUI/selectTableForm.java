@@ -12,14 +12,13 @@ import javax.swing.JOptionPane;
 public class selectTableForm extends javax.swing.JFrame {
 
     private Connection conn;
-//private selectDbForm select_dbform;
     private selectionForm select_form;
 
-    public selectTableForm(selectionForm select_form,String selectedDb) {
+    public selectTableForm(selectionForm select_form, String selectedDb) {
 
         initComponents();
+        
         this.select_form = select_form;
-//      String selectedDb = select_dbform.getSelectedComboBoxItem();
         String url = "jdbc:mysql://localhost:3307/";
         String user = "root";
         String password = "";
@@ -91,7 +90,7 @@ public class selectTableForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(104, 104, 104)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(tableCombox, 0, 190, Short.MAX_VALUE)
                     .addComponent(tableDoneBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(106, Short.MAX_VALUE))
@@ -100,10 +99,10 @@ public class selectTableForm extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(105, 105, 105)
-                .addComponent(tableCombox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tableDoneBtn)
-                .addContainerGap(135, Short.MAX_VALUE))
+                .addComponent(tableCombox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tableDoneBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(135, 135, 135))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

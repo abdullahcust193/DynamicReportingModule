@@ -37,8 +37,13 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void openTableForm() {
-        selectTableForm sTableForm = new selectTableForm(this,dbName);
+        selectTableForm sTableForm = new selectTableForm(this, dbName);
         sTableForm.setVisible(true);
+    }
+
+    private void openColumnForm() {
+        selectColumnForm sColumnForm = new selectColumnForm(dbName,tableName);
+        sColumnForm.setVisible(true);
     }
 
     @SuppressWarnings("unchecked")
@@ -82,6 +87,11 @@ public class selectionForm extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Select Columns");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Columns Not Selected");
@@ -142,15 +152,16 @@ public class selectionForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectDbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDbBtnActionPerformed
-
         openDbForm();
     }//GEN-LAST:event_selectDbBtnActionPerformed
 
     private void selectTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTableBtnActionPerformed
-        // TODO add your handling code here:
         openTableForm();
-
     }//GEN-LAST:event_selectTableBtnActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        openColumnForm();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
 
