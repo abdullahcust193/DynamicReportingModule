@@ -2,21 +2,36 @@ package DR_GUI;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class selectionForm extends javax.swing.JFrame {
 
+    private Connection conn;
     private String tableName = "";
-    private DefaultTableModel tableModel;
+//    private selectColumnForm sColumnForm;
     public String dbName = "";
+    private List<String> columnNames;
 
     public selectionForm() {
         initComponents();
+
+        String url = "jdbc:mysql://localhost:3307/";
+        String user = "root";
+        String password = "";
+
+        try {
+            conn = DriverManager.getConnection(url, user, password);
+
+        } catch (SQLException e) {
+            System.out.println("\nDatabase Connection Error: " + e.getMessage());
+        }
+
     }
 
     public void setDatabaseName(String dbN) {
@@ -28,7 +43,68 @@ public class selectionForm extends javax.swing.JFrame {
     public void setTableName(String tblName) {
         tableName = tblName;
         tblSelectMsg.setText(tblName);
-        System.out.println("Table Name get from Table from: " + tableName);
+        System.out.println("\nTable Name get from Table From: " + tableName);
+    }
+
+    public void setColumnNames(List<String> columnNames) {
+        this.columnNames = columnNames;
+        System.out.println("Selected Column get from Column From: " + columnNames);
+        displayData();
+
+    }
+
+    private void displayData() {
+        try {
+            // Create a statement object
+            Statement stmt = conn.createStatement();
+            // Select the database
+            conn.createStatement().executeUpdate("USE " + dbName);
+            // Build the SQL query string
+            StringBuilder query = new StringBuilder();
+            query.append("SELECT ");
+
+            // Add the selected column names to the query
+            for (int i = 0; i < columnNames.size(); i++) {
+                query.append(columnNames.get(i));
+                if (i != columnNames.size() - 1) {
+                    query.append(", ");
+                }
+            }
+
+            // Add the table name to the query
+            query.append(" FROM ");
+            query.append(tableName);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery(query.toString());
+
+            // Get the number of columns in the result set
+            ResultSetMetaData metaData = rs.getMetaData();
+            int numCols = metaData.getColumnCount();
+
+            // Create a new table model
+            DefaultTableModel model = new DefaultTableModel();
+
+            // Add the column names to the table model
+            for (int i = 1; i <= numCols; i++) {
+                model.addColumn(metaData.getColumnLabel(i));
+            }
+
+            // Add the rows to the table model
+            while (rs.next()) {
+                Object[] rowData = new Object[numCols];
+                for (int i = 1; i <= numCols; i++) {
+                    rowData[i - 1] = rs.getObject(i);
+                }
+                model.addRow(rowData);
+            }
+
+            // Set the table model on the JTable
+            mainTable.setModel(model);
+
+        } catch (SQLException e) {
+            System.out.println("SQL Exception: " + e.getMessage());
+        }
     }
 
     private void openDbForm() {
@@ -42,7 +118,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void openColumnForm() {
-        selectColumnForm sColumnForm = new selectColumnForm(dbName,tableName);
+        selectColumnForm sColumnForm = new selectColumnForm(this, dbName, tableName);
         sColumnForm.setVisible(true);
     }
 
@@ -57,6 +133,8 @@ public class selectionForm extends javax.swing.JFrame {
         tblSelectMsg = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        mainTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +174,19 @@ public class selectionForm extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 0, 0));
         jLabel1.setText("Columns Not Selected");
 
+        mainTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(mainTable);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -103,16 +194,19 @@ public class selectionForm extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(165, 165, 165)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(selectDbBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(dbSelectMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(selectDbBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(dbSelectMsg, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(211, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -129,7 +223,9 @@ public class selectionForm extends javax.swing.JFrame {
                         .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel1))
                     .addComponent(dbSelectMsg))
-                .addContainerGap(398, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(194, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -177,6 +273,8 @@ public class selectionForm extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable mainTable;
     private javax.swing.JButton selectDbBtn;
     private javax.swing.JButton selectTableBtn;
     private javax.swing.JLabel tblSelectMsg;
