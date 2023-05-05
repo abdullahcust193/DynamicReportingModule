@@ -13,15 +13,18 @@ public class selectTableForm extends javax.swing.JFrame {
 
     private Connection conn;
     private selectionForm select_form;
+    private boolean istblSelected;
 
-    public selectTableForm(selectionForm select_form, String selectedDb) {
+    public selectTableForm(selectionForm select_form, String selectedDb, boolean istblSelected) {
 
         initComponents();
-        
+
         this.select_form = select_form;
+        this.istblSelected = istblSelected;
         String url = "jdbc:mysql://localhost:3307/";
         String user = "root";
         String password = "";
+
         try {
             conn = DriverManager.getConnection(url, user, password);
             try {
@@ -39,6 +42,7 @@ public class selectTableForm extends javax.swing.JFrame {
         } catch (SQLException e) {
             System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
+
     }
 
     private List<String> getTableList(String databaseName) throws SQLException {
@@ -56,11 +60,6 @@ public class selectTableForm extends javax.swing.JFrame {
 
     public String getSelected_TblComboBoxItem() {
         return tableCombox.getSelectedItem().toString();
-    }
-
-    private void tableSelected(String tblName) {
-        select_form.setTableName(tblName);
-        dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -138,11 +137,17 @@ public class selectTableForm extends javax.swing.JFrame {
 
     private void tableDoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableDoneBtnActionPerformed
         // TODO add your handling code here:
-        String tableNAme = (String) tableCombox.getSelectedItem();
-        System.out.println("Table Selected : " + tableNAme);
-        JOptionPane.showMessageDialog(selectTableForm.this, "Selected Database : " + tableNAme);
-        select_form.setTableName(tableNAme);
-        this.dispose();
+        if (tableCombox.getSelectedItem() == null) {
+            istblSelected = false;
+        } else {
+            istblSelected = true;
+            select_form.setTableSelected(istblSelected);
+            String tableNAme = (String) tableCombox.getSelectedItem();
+            System.out.println("Table Selected : " + tableNAme);
+            JOptionPane.showMessageDialog(selectTableForm.this, "Selected Table : " + tableNAme);
+            select_form.setTableName(tableNAme);
+            this.dispose();
+        }
     }//GEN-LAST:event_tableDoneBtnActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

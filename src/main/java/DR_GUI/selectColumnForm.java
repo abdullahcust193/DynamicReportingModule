@@ -27,6 +27,7 @@ public class selectColumnForm extends javax.swing.JFrame {
     public selectColumnForm(selectionForm select_form, String selectedDb, String selectedTable) {
         initComponents();
         this.select_form = select_form;
+
         String url = "jdbc:mysql://localhost:3307/";
         String user = "root";
         String password = "";
@@ -199,8 +200,8 @@ public class selectColumnForm extends javax.swing.JFrame {
     private void doneColumnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneColumnBtnActionPerformed
         List<String> selectedColumns = getSelectedColumns();
         JOptionPane.showMessageDialog(null, "Selected Columns: " + selectedColumns);
-         select_form.setColumnNames(selectedColumns);
-//        selectionForm otherForm = new selectionForm();
+        select_form.setColumnNames(selectedColumns);
+        select_form.fetchSelectedColumnsData();
         dispose();
     }//GEN-LAST:event_doneColumnBtnActionPerformed
 

@@ -17,11 +17,14 @@ public class selectDbForm extends javax.swing.JFrame {
 
     private Connection conn;
     private selectionForm select_form;
+    private String DbName;
+    private boolean isDbSelected;
 
-    public selectDbForm(selectionForm select_form) {
+    public selectDbForm(selectionForm select_form, boolean isDbSelected) {
 
         initComponents();
         this.select_form = select_form;
+        this.isDbSelected = isDbSelected;
         String url = "jdbc:mysql://localhost:3307/";
         String user = "root";
         String password = "";
@@ -43,6 +46,7 @@ public class selectDbForm extends javax.swing.JFrame {
 
     private void databaseSelected(String dbName) {
         select_form.setDatabaseName(dbName);
+        DbName = dbName;
         dispose();
     }
 
@@ -59,7 +63,7 @@ public class selectDbForm extends javax.swing.JFrame {
         return databaseList;
     }
 
-    public String getSelectedComboBoxItem() {
+    public String getDbSelectedComboBoxItem() {
         return dbComboBox.getSelectedItem().toString();
     }
 
@@ -90,6 +94,11 @@ public class selectDbForm extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         dbComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Database" }));
+        dbComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                dbComboBoxActionPerformed(evt);
+            }
+        });
 
         dbDoneBtn.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         dbDoneBtn.setText("Done");
@@ -155,18 +164,32 @@ public class selectDbForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dbDoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbDoneBtnActionPerformed
-
-        String dbNAme = (String) dbComboBox.getSelectedItem();
-        System.out.println("Database Selected : " + dbNAme);
-        JOptionPane.showMessageDialog(selectDbForm.this, "Selected Database : " + dbNAme);
-        select_form.setDatabaseName(dbNAme);
-        this.dispose();
+        if (dbComboBox.getSelectedItem() == null) {
+            isDbSelected = false;
+        } else {
+            isDbSelected=true;
+            select_form.setDbSelected(isDbSelected);
+            String dbNAme = (String) dbComboBox.getSelectedItem();
+            System.out.println("Database Selected : " + dbNAme);
+            JOptionPane.showMessageDialog(selectDbForm.this, "Selected Database : " + dbNAme);
+            select_form.setDatabaseName(dbNAme);
+            this.dispose();
+        }
     }//GEN-LAST:event_dbDoneBtnActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void dbComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbComboBoxActionPerformed
+        // TODO add your handling code here:
+        String selectedDb = dbComboBox.getSelectedItem().toString();
+        if (!selectedDb.equals(DbName)) {
+
+            DbName = selectedDb;
+        }
+    }//GEN-LAST:event_dbComboBoxActionPerformed
 
     public static void main(String args[]) {
 

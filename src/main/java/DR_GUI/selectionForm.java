@@ -1,5 +1,8 @@
 package DR_GUI;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,14 +10,21 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class selectionForm extends javax.swing.JFrame {
 
     private Connection conn;
     private String tableName = "";
-//    private selectColumnForm sColumnForm;
+    private boolean dbSelected = false;
+    private boolean tableSelected = false;
     public String dbName = "";
     private List<String> columnNames;
 
@@ -34,6 +44,22 @@ public class selectionForm extends javax.swing.JFrame {
 
     }
 
+    public boolean isDbSelected() {
+        return dbSelected;
+    }
+
+    public void setDbSelected(boolean dbSelected) {
+        this.dbSelected = dbSelected;
+    }
+
+    public boolean isTableSelected() {
+        return tableSelected;
+    }
+
+    public void setTableSelected(boolean tableSelected) {
+        this.tableSelected = tableSelected;
+    }
+
     public void setDatabaseName(String dbN) {
         dbName = dbN;
         dbSelectMsg.setText(dbN);
@@ -49,71 +75,64 @@ public class selectionForm extends javax.swing.JFrame {
     public void setColumnNames(List<String> columnNames) {
         this.columnNames = columnNames;
         System.out.println("Selected Column get from Column From: " + columnNames);
-        displayData();
-
     }
 
-    private void displayData() {
+    public void fetchSelectedColumnsData() {
+
+        DefaultTableModel selectedColumnsTableModel = (DefaultTableModel) mainTable.getModel();
+        selectedColumnsTableModel.setRowCount(0);
+        selectedColumnsTableModel.setColumnCount(0); // Clear column headers
+
+        if (columnNames.isEmpty() || tableName == null || tableName.isEmpty()) {
+            System.out.println("No columns or table selected.");
+            selectedColumnsTableModel.setRowCount(0);
+            return;
+        }
         try {
-            // Create a statement object
-            Statement stmt = conn.createStatement();
-            // Select the database
             conn.createStatement().executeUpdate("USE " + dbName);
-            // Build the SQL query string
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT ");
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Connection Error: " + ex.getMessage());
+        }
+        String query = "SELECT ";
+        for (String column : columnNames) {
+            query += column + ",";
+        }
 
-            // Add the selected column names to the query
-            for (int i = 0; i < columnNames.size(); i++) {
-                query.append(columnNames.get(i));
-                if (i != columnNames.size() - 1) {
-                    query.append(", ");
-                }
+        query = query.substring(0, query.length() - 1);
+        query += " FROM " + tableName;
+
+        try (Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query)) {
+
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            // Get column names
+            String[] columnNam = new String[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNam[i - 1] = rsmd.getColumnName(i);
             }
-
-            // Add the table name to the query
-            query.append(" FROM ");
-            query.append(tableName);
-
-            // Execute the query
-            ResultSet rs = stmt.executeQuery(query.toString());
-
-            // Get the number of columns in the result set
-            ResultSetMetaData metaData = rs.getMetaData();
-            int numCols = metaData.getColumnCount();
-
-            // Create a new table model
-            DefaultTableModel model = new DefaultTableModel();
-
-            // Add the column names to the table model
-            for (int i = 1; i <= numCols; i++) {
-                model.addColumn(metaData.getColumnLabel(i));
-            }
-
-            // Add the rows to the table model
+            // Set column names in the table model
+            selectedColumnsTableModel.setColumnIdentifiers(columnNam);
+            // Add rows to the table model
             while (rs.next()) {
-                Object[] rowData = new Object[numCols];
-                for (int i = 1; i <= numCols; i++) {
+                Object[] rowData = new Object[columnCount];
+                for (int i = 1; i <= columnCount; i++) {
                     rowData[i - 1] = rs.getObject(i);
                 }
-                model.addRow(rowData);
+                selectedColumnsTableModel.addRow(rowData);
             }
-
-            // Set the table model on the JTable
-            mainTable.setModel(model);
-
         } catch (SQLException e) {
-            System.out.println("SQL Exception: " + e.getMessage());
+            System.out.println("Error in Select Colums fUCNN: " + e.getMessage());
         }
     }
 
-    private void openDbForm() {
-        selectDbForm showdbs = new selectDbForm(this);
+    private void openDbForm(boolean dbSelected) {
+        selectDbForm showdbs = new selectDbForm(this, dbSelected);
         showdbs.setVisible(true);
     }
 
-    private void openTableForm() {
-        selectTableForm sTableForm = new selectTableForm(this, dbName);
+    private void openTableForm(boolean tableSelected) {
+        selectTableForm sTableForm = new selectTableForm(this, dbName, tableSelected);
         sTableForm.setVisible(true);
     }
 
@@ -131,8 +150,8 @@ public class selectionForm extends javax.swing.JFrame {
         dbSelectMsg = new javax.swing.JLabel();
         selectTableBtn = new javax.swing.JButton();
         tblSelectMsg = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        columnSelectBtn = new javax.swing.JButton();
+        showColumnsLbl = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         mainTable = new javax.swing.JTable();
 
@@ -163,26 +182,23 @@ public class selectionForm extends javax.swing.JFrame {
         tblSelectMsg.setForeground(new java.awt.Color(255, 0, 0));
         tblSelectMsg.setText("Table Not Selected");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("Select Columns");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        columnSelectBtn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        columnSelectBtn.setText("Select Columns");
+        columnSelectBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                columnSelectBtnActionPerformed(evt);
             }
         });
 
-        jLabel1.setForeground(new java.awt.Color(255, 0, 0));
-        jLabel1.setText("Columns Not Selected");
+        showColumnsLbl.setForeground(new java.awt.Color(255, 0, 0));
+        showColumnsLbl.setText("Columns Not Selected");
 
         mainTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(mainTable);
@@ -205,8 +221,8 @@ public class selectionForm extends javax.swing.JFrame {
                             .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(columnSelectBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(showColumnsLbl, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(211, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -216,12 +232,12 @@ public class selectionForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(selectDbBtn)
                     .addComponent(selectTableBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(columnSelectBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(tblSelectMsg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel1))
+                        .addComponent(showColumnsLbl))
                     .addComponent(dbSelectMsg))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -248,16 +264,28 @@ public class selectionForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void selectDbBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectDbBtnActionPerformed
-        openDbForm();
+        openDbForm(dbSelected);
     }//GEN-LAST:event_selectDbBtnActionPerformed
 
     private void selectTableBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectTableBtnActionPerformed
-        openTableForm();
+        if (!dbSelected) {
+            JOptionPane.showMessageDialog(this, "Please select a database first.");
+        } else {
+            openTableForm(tableSelected);
+        }
     }//GEN-LAST:event_selectTableBtnActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        openColumnForm();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void columnSelectBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnSelectBtnActionPerformed
+
+        if (!dbSelected) {
+            JOptionPane.showMessageDialog(this, "Please select a database first.");
+        } else if (!tableSelected) {
+            JOptionPane.showMessageDialog(this, "Please select a table first.");
+        } else {
+            openColumnForm();
+        }
+
+    }//GEN-LAST:event_columnSelectBtnActionPerformed
 
     public static void main(String args[]) {
 
@@ -269,14 +297,14 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton columnSelectBtn;
     private javax.swing.JLabel dbSelectMsg;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable mainTable;
     private javax.swing.JButton selectDbBtn;
     private javax.swing.JButton selectTableBtn;
+    private javax.swing.JLabel showColumnsLbl;
     private javax.swing.JLabel tblSelectMsg;
     // End of variables declaration//GEN-END:variables
 }
