@@ -1,8 +1,6 @@
 package DR_GUI;
 
-import com.mysql.cj.conf.PropertyKey;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,18 +12,19 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
 
 public class selectColumnForm extends javax.swing.JFrame {
 
     private Connection conn;
     private String tblName;
     private String dbname;
-    private List<String> selectedColumns = new ArrayList<>();
     private selectionForm select_form;
+    private List<String> selectedColumns = new ArrayList<>();
+    private List<String> savedSelectedColumns = new ArrayList<>();
 
     public selectColumnForm(selectionForm select_form, String selectedDb, String selectedTable) {
         initComponents();
+           setTitle("Select Columns");
         this.select_form = select_form;
 
         String url = "jdbc:mysql://localhost:3307/";
@@ -33,9 +32,8 @@ public class selectColumnForm extends javax.swing.JFrame {
         String password = "";
         tblName = selectedTable;
         dbname = selectedDb;
-
-//        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
-//        checkBoxPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+//      checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
+//      checkBoxPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
         checkBoxPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         try {
@@ -76,6 +74,10 @@ public class selectColumnForm extends javax.swing.JFrame {
                 columnName = rsmd.getColumnName(i);
 //              columnCombBx.addItem(columnName);
                 JCheckBox checkbox = new JCheckBox(columnName);
+                // set the checkbox to selected if the column is in the saved list
+                if (savedSelectedColumns.contains(columnName)) {
+                    checkbox.setSelected(true);
+                }
                 checkBoxPanel.add(checkbox);
                 checkBoxPanel.revalidate();
                 checkBoxPanel.repaint();
@@ -87,12 +89,14 @@ public class selectColumnForm extends javax.swing.JFrame {
 
     public List<String> getSelectedColumns() {
         selectedColumns.clear();
+        savedSelectedColumns.clear(); // clear the saved list
         Component[] components = checkBoxPanel.getComponents();
         for (Component component : components) {
             if (component instanceof JCheckBox) {
                 JCheckBox checkBox = (JCheckBox) component;
                 if (checkBox.isSelected()) {
                     selectedColumns.add(checkBox.getText());
+                    savedSelectedColumns.add(checkBox.getText()); // add to the saved list
                     System.out.println("Colums Selected from SelectColumn Form : " + checkBox.getText());
                 }
             }
@@ -105,15 +109,11 @@ public class selectColumnForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         checkBoxPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         doneColumnBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
-        jLabel1.setText("Select Columns");
 
         javax.swing.GroupLayout checkBoxPanelLayout = new javax.swing.GroupLayout(checkBoxPanel);
         checkBoxPanel.setLayout(checkBoxPanelLayout);
@@ -148,32 +148,25 @@ public class selectColumnForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(93, 93, 93)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(137, 137, 137))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(doneColumnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(188, Short.MAX_VALUE))))
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(doneColumnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(39, Short.MAX_VALUE)
                 .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(doneColumnBtn))
-                .addGap(76, 76, 76))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(doneColumnBtn)
+                    .addComponent(jButton1))
+                .addGap(65, 65, 65))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -218,7 +211,6 @@ public class selectColumnForm extends javax.swing.JFrame {
     private javax.swing.JPanel checkBoxPanel;
     private javax.swing.JButton doneColumnBtn;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

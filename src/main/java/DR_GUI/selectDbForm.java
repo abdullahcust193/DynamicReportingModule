@@ -1,8 +1,6 @@
 package DR_GUI;
 
-import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 public class selectDbForm extends javax.swing.JFrame {
@@ -23,6 +21,7 @@ public class selectDbForm extends javax.swing.JFrame {
     public selectDbForm(selectionForm select_form, boolean isDbSelected) {
 
         initComponents();
+        setTitle("Select Database");
         this.select_form = select_form;
         this.isDbSelected = isDbSelected;
         String url = "jdbc:mysql://localhost:3307/";
@@ -37,7 +36,7 @@ public class selectDbForm extends javax.swing.JFrame {
                 System.out.println(dbName);
                 dbComboBox.addItem(dbName);
             }
-
+            
         } catch (SQLException e) {
             System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
@@ -92,6 +91,22 @@ public class selectDbForm extends javax.swing.JFrame {
         jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        jPanel2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel2KeyPressed(evt);
+            }
+        });
 
         dbComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Database" }));
         dbComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -105,6 +120,11 @@ public class selectDbForm extends javax.swing.JFrame {
         dbDoneBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 dbDoneBtnActionPerformed(evt);
+            }
+        });
+        dbDoneBtn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                dbDoneBtnKeyPressed(evt);
             }
         });
 
@@ -164,10 +184,11 @@ public class selectDbForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dbDoneBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbDoneBtnActionPerformed
+
         if (dbComboBox.getSelectedItem() == null) {
             isDbSelected = false;
         } else {
-            isDbSelected=true;
+            isDbSelected = true;
             select_form.setDbSelected(isDbSelected);
             String dbNAme = (String) dbComboBox.getSelectedItem();
             System.out.println("Database Selected : " + dbNAme);
@@ -190,6 +211,25 @@ public class selectDbForm extends javax.swing.JFrame {
             DbName = selectedDb;
         }
     }//GEN-LAST:event_dbComboBoxActionPerformed
+
+    private void jPanel2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_jPanel2KeyPressed
+
+    private void dbDoneBtnKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dbDoneBtnKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_dbDoneBtnKeyPressed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_formKeyPressed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosed
 
     public static void main(String args[]) {
 

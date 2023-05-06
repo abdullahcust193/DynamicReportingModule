@@ -18,7 +18,7 @@ public class selectTableForm extends javax.swing.JFrame {
     public selectTableForm(selectionForm select_form, String selectedDb, boolean istblSelected) {
 
         initComponents();
-
+        setTitle("Select Table");
         this.select_form = select_form;
         this.istblSelected = istblSelected;
         String url = "jdbc:mysql://localhost:3307/";
