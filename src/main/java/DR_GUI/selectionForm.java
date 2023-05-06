@@ -1,10 +1,12 @@
 package DR_GUI;
 
+import Classes.Student;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -327,10 +330,28 @@ public class selectionForm extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_columnSelectBtnActionPerformed
+    private JRResultSetDataSource getData(String qury) {
+        // Fetch or generate your data here
+        JRResultSetDataSource resultSetDataSource = null;
+
+        try {
+            Statement statement = conn.createStatement();
+            ResultSet resultSet = statement.executeQuery(qury);
+            // Convert ResultSet to JRResultSetDataSource
+            resultSetDataSource = new JRResultSetDataSource(resultSet);
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "SQL Error in GetData(): " + ex.getMessage());
+        }
+        return resultSetDataSource;
+    }
+
     public void printReport() throws JRException {
         JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
-        // Create a JRDesignField for each column
+
         List<JRDesignField> fields = new ArrayList<>();
+
+        // Create a JRDesignField for each column
         for (int i = 0; i < mainTable.getColumnCount(); i++) {
             JRDesignField field = new JRDesignField();
             field.setName(mainTable.getColumnName(i));
@@ -339,7 +360,7 @@ public class selectionForm extends javax.swing.JFrame {
             fields.add(field);
         }
 
-// Add fields to the report design
+        // Add fields to the report design
         JRDesignDataset dataset = (JRDesignDataset) design.getMainDesignDataset();
         for (JRDesignField field : fields) {
             dataset.addField(field);
@@ -355,13 +376,14 @@ public class selectionForm extends javax.swing.JFrame {
         }
         query += " FROM " + tableName; // replace 'myTable' with the name of your table
 
-// Create the JRDesignQuery object and set the query text
+        // Create the JRDesignQuery object and set the query text
         JRDesignQuery jrQuery = new JRDesignQuery();
         jrQuery.setText(query);
 
-// Set the query for the JasperDesign object
+        // Set the query for the JasperDesign object
         design.setQuery(jrQuery);
         System.out.println("Generated query = " + query);
+        JRResultSetDataSource dataList = getData(query);
 
         for (int i = 0; i < mainTable.getRowCount(); i++) {
             for (int j = 0; j < mainTable.getColumnCount(); j++) {
@@ -388,9 +410,9 @@ public class selectionForm extends javax.swing.JFrame {
         parameters.put("tableNam", tableName);
         // Set the data source for the report
         JRTableModelDataSource dataSource = new JRTableModelDataSource(mainTable.getModel());
-
+//        JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(dataList);
         // Fill the report with data
-        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataSource);
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
 
         // Show the report in a viewer
         JasperViewer.viewReport(jasperPrint, false);
