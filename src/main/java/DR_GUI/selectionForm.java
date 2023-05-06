@@ -348,24 +348,7 @@ public class selectionForm extends javax.swing.JFrame {
 
     public void printReport() throws JRException {
         JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
-
-        List<JRDesignField> fields = new ArrayList<>();
-
-        // Create a JRDesignField for each column
-        for (int i = 0; i < mainTable.getColumnCount(); i++) {
-            JRDesignField field = new JRDesignField();
-            field.setName(mainTable.getColumnName(i));
-            System.out.println("Report col name = " + mainTable.getColumnName(i));
-            field.setValueClass(mainTable.getColumnClass(i));
-            fields.add(field);
-        }
-
-        // Add fields to the report design
-        JRDesignDataset dataset = (JRDesignDataset) design.getMainDesignDataset();
-        for (JRDesignField field : fields) {
-            dataset.addField(field);
-        }
-
+       
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
         for (int i = 0; i < numColumns; i++) {
@@ -375,42 +358,22 @@ public class selectionForm extends javax.swing.JFrame {
             }
         }
         query += " FROM " + tableName; // replace 'myTable' with the name of your table
-
         // Create the JRDesignQuery object and set the query text
-        JRDesignQuery jrQuery = new JRDesignQuery();
-        jrQuery.setText(query);
-
+        // JRDesignQuery jrQuery = new JRDesignQuery();
+        // jrQuery.setText(query);
         // Set the query for the JasperDesign object
-        design.setQuery(jrQuery);
+        // design.setQuery(jrQuery);
         System.out.println("Generated query = " + query);
         JRResultSetDataSource dataList = getData(query);
-
-        for (int i = 0; i < mainTable.getRowCount(); i++) {
-            for (int j = 0; j < mainTable.getColumnCount(); j++) {
-                System.out.print(mainTable.getValueAt(i, j) + "\t");
-            }
-            System.out.println();
-        }
         // Compile the JRXML file
         JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
         // Create a HashMap to hold the report parameters
         HashMap<String, Object> parameters = new HashMap<>();
-
         // Get the column names from the JTable
         String[] columnNames = new String[mainTable.getColumnCount()];
         for (int i = 0; i < columnNames.length; i++) {
             columnNames[i] = mainTable.getColumnName(i);
-        }
-        // Get the column names from the JTable
-
-        // Add the column names as a parameter to the report
-        parameters.put("columnName", columnNames);
-        parameters.put("databaseNam", dbName);
-        System.out.println("database pass to report: " + dbName);
-        parameters.put("tableNam", tableName);
-        // Set the data source for the report
-        JRTableModelDataSource dataSource = new JRTableModelDataSource(mainTable.getModel());
-//        JRBeanCollectionDataSource data = new JRBeanCollectionDataSource(dataList);
+        }   
         // Fill the report with data
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
 
