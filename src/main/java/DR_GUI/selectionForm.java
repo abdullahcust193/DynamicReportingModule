@@ -382,10 +382,10 @@ public class selectionForm extends javax.swing.JFrame {
         // Get the column names from the JTable
 
         // Add the column names as a parameter to the report
-        parameters.put("columnNames", columnNames);
-        parameters.put("databaseName", dbName);
-        System.out.println("database pass to report: "+dbName);
-        parameters.put("tableName", tableName);
+        parameters.put("columnName", columnNames);
+        parameters.put("databaseNam", dbName);
+        System.out.println("database pass to report: " + dbName);
+        parameters.put("tableNam", tableName);
         // Set the data source for the report
         JRTableModelDataSource dataSource = new JRTableModelDataSource(mainTable.getModel());
 
