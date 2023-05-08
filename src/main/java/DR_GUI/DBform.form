@@ -49,6 +49,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
+<<<<<<< HEAD
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="showdb1" min="-2" pref="154" max="-2" attributes="0"/>
@@ -81,6 +82,15 @@
                       </Group>
                   </Group>
                   <EmptySpace min="0" pref="270" max="32767" attributes="0"/>
+=======
+                      <Component id="chckboxPanel" alignment="1" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="showTables" min="-2" pref="132" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+>>>>>>> main
               </Group>
           </Group>
         </DimensionLayout>
@@ -116,11 +126,19 @@
                       <Component id="printButton" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="showDataBtn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
+<<<<<<< HEAD
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jScrollPane2" min="-2" pref="207" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="selectColumnsBtn" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="291" max="-2" attributes="0"/>
+=======
+                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="283" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="selectColumnsBtn" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace pref="164" max="32767" attributes="0"/>
+>>>>>>> main
               </Group>
           </Group>
         </DimensionLayout>
@@ -192,6 +210,9 @@
               <Dimension value="[157, 31]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="columnCombBxActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -275,7 +296,11 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
+<<<<<<< HEAD
                   <EmptySpace min="0" pref="306" max="32767" attributes="0"/>
+=======
+                  <EmptySpace min="0" pref="451" max="32767" attributes="0"/>
+>>>>>>> main
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">

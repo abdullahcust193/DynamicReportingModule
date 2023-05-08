@@ -12,14 +12,10 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class DBform extends javax.swing.JFrame {
@@ -63,7 +59,7 @@ public class DBform extends javax.swing.JFrame {
                     System.out.println("\nError with Fetching Tables in ComboBox: " + ex.getMessage());
                 }
             });
-
+  
             tableCombBx.addActionListener(e -> {
                 try {
                     String databaseName = (String) dbCombBox.getSelectedItem();
@@ -333,6 +329,11 @@ public class DBform extends javax.swing.JFrame {
         columnCombBx.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         columnCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the column" }));
         columnCombBx.setMinimumSize(new java.awt.Dimension(157, 31));
+        columnCombBx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                columnCombBxActionPerformed(evt);
+            }
+        });
 
         tableDB.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         tableDB.setModel(new javax.swing.table.DefaultTableModel(
@@ -384,7 +385,11 @@ public class DBform extends javax.swing.JFrame {
         chckboxPanel.setLayout(chckboxPanelLayout);
         chckboxPanelLayout.setHorizontalGroup(
             chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
             .addGap(0, 306, Short.MAX_VALUE)
+=======
+            .addGap(0, 451, Short.MAX_VALUE)
+>>>>>>> main
         );
         chckboxPanelLayout.setVerticalGroup(
             chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,6 +436,7 @@ public class DBform extends javax.swing.JFrame {
             .addGroup(panel1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+<<<<<<< HEAD
                     .addGroup(panel1Layout.createSequentialGroup()
                         .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(showdb1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -455,6 +461,13 @@ public class DBform extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(chckboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 270, Short.MAX_VALUE))
+=======
+                    .addComponent(chckboxPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(panel1Layout.createSequentialGroup()
+                        .addComponent(showTables, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+>>>>>>> main
         );
         panel1Layout.setVerticalGroup(
             panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -481,11 +494,19 @@ public class DBform extends javax.swing.JFrame {
                 .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(printButton)
                     .addComponent(showDataBtn))
+<<<<<<< HEAD
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(291, 291, 291))
+=======
+                .addGap(26, 26, 26)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(164, Short.MAX_VALUE))
+>>>>>>> main
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -561,6 +582,11 @@ public class DBform extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_tableDBMouseClicked
+    
+
+    private void columnCombBxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnCombBxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_columnCombBxActionPerformed
 
     public static void main(String args[]) {
 

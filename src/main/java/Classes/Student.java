@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Classes;
 
-/**
- *
- * @author chabd
- */
 public class Student {
+
     public int id;
     public String name;
     public String regno;
@@ -19,6 +12,10 @@ public class Student {
         this.name = "";
         this.regno = "";
         this.age = 0;
+    }
+
+    public Student(String name) {
+        this.name = name;
     }
 
     public Student(int id, String name, String regno, int age) {
@@ -34,7 +31,7 @@ public class Student {
 
     public void setId(int id) {
         this.id = id;
-        System.out.println("Id Is Set in Model Class = "+id);
+        System.out.println("Id Is Set in Model Class = " + id);
     }
 
     public String getName() {
@@ -43,7 +40,7 @@ public class Student {
 
     public void setName(String name) {
         this.name = name;
-        System.out.println("Name Is Set in Model Class = "+name);
+        System.out.println("Name Is Set in Model Class = " + name);
     }
 
     public String getRegno() {
@@ -52,7 +49,7 @@ public class Student {
 
     public void setRegno(String regno) {
         this.regno = regno;
-            System.out.println("Regno Is Set in Model Class = "+regno);
+        System.out.println("Regno Is Set in Model Class = " + regno);
     }
 
     public int getAge() {
@@ -61,9 +58,7 @@ public class Student {
 
     public void setAge(int age) {
         this.age = age;
-            System.out.println("age Is Set in Model Class = "+age);
+        System.out.println("age Is Set in Model Class = " + age);
     }
-    
-    
-    
+
 }

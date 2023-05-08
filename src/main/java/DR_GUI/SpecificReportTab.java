@@ -9,7 +9,6 @@ import Controller.StudentController;
 import DBController.DBConnect;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.KeyEvent;
 import static java.lang.Integer.parseInt;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -21,8 +20,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import net.sf.jasperreports.engine.JRException;
@@ -34,8 +31,6 @@ import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.swing.JRViewer;
-import net.sf.jasperreports.view.JasperViewer;
-import org.jfree.data.general.DefaultPieDataset;
 
 /**
  *
