@@ -358,7 +358,7 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
-  public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerConfigurationException, TransformerException {
+ public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerConfigurationException, TransformerException {
     try {
         // Create a new XML document
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -378,6 +378,33 @@ public class selectionForm extends javax.swing.JFrame {
             fieldElement.setAttribute("name", columnName);
             fieldElement.setAttribute("class", columnClass);
             rootElement.appendChild(fieldElement);
+
+            // Create textField element
+            Element textFieldElement = doc.createElement("textField");
+            fieldElement.appendChild(textFieldElement);
+
+            // Create reportElement element
+            Element reportElementElement = doc.createElement("reportElement");
+            reportElementElement.setAttribute("x", "100");
+            reportElementElement.setAttribute("y", "0");
+            reportElementElement.setAttribute("width", "175");
+            reportElementElement.setAttribute("height", "30");
+            reportElementElement.setAttribute("uuid", "f708ed29-d9b0-465b-a8de-0a79576abd0f");
+            textFieldElement.appendChild(reportElementElement);
+
+            // Create textElement element
+            Element textElementElement = doc.createElement("textElement");
+            textFieldElement.appendChild(textElementElement);
+
+            // Create font element
+            Element fontElement = doc.createElement("font");
+            fontElement.setAttribute("size", "12");
+            textElementElement.appendChild(fontElement);
+
+            // Create textFieldExpression element
+            Element textFieldExpressionElement = doc.createElement("textFieldExpression");
+            textFieldExpressionElement.setTextContent("$F{" + columnName + "}");
+            textFieldElement.appendChild(textFieldExpressionElement);
         }
 
         // Write the XML document to a file
@@ -391,8 +418,11 @@ public class selectionForm extends javax.swing.JFrame {
         System.out.println("XML file generated successfully!");
 
     } catch (ParserConfigurationException | TransformerException e) {
+        // Handle exceptions
     }
 }
+
+
 
 
     private void GenerateTemplateDynimcally() {

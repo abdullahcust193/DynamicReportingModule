@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Fields><Field class="java.lang.String" name="name"/>
-<Field class="java.lang.String" name="mobileNumber"/>
-<Field class="java.lang.String" name="email"/>
-<Field class="java.lang.String" name="date"/>
+<Fields>
+<Field class="java.lang.Integer" name="id">
+<textField>
+<reportElement height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/>
+<textElement>
+<font size="12"/>
+</textElement>
+<textFieldExpression>$F{id}</textFieldExpression>
+</textField>
+</Field>
+<Field class="java.lang.String" name="name">
+<textField><reportElement height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/>
+<textElement><font size="12"/>
+</textElement>
+<textFieldExpression>$F{name}</textFieldExpression>
+</textField></Field><Field class="java.lang.String" name="category">
+<textField><reportElement height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/>
+<textElement><font size="12"/>
+</textElement><textFieldExpression>$F{category}</textFieldExpression>
+</textField></Field><Field class="java.lang.String" name="price"><textField>
+<reportElement height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/>
+<textElement><font size="12"/></textElement>
+<textFieldExpression>$F{price}</textFieldExpression>
+</textField>
+</Field>
 </Fields>
