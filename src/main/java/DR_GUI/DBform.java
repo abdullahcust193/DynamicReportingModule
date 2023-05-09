@@ -12,6 +12,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRResultSetDataSource;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -218,64 +219,62 @@ public class DBform extends javax.swing.JFrame {
 
     private void generateReport(String tableName, String dbName) throws SQLException {
         try {
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/" + dbName, "root", "");
-
             // Get selected columns from the database
-            List<String> selectedColumns = new ArrayList<>();
-            for (Component c : chckboxPanel.getComponents()) {
-                if (c instanceof JCheckBox) {
-                    JCheckBox checkbox = (JCheckBox) c;
-                    if (checkbox.isSelected()) {
-                        selectedColumns.add(checkbox.getText());
+            try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3307/" + dbName, "root", "")) {
+                // Get selected columns from the database
+                List<String> selectedColumns = new ArrayList<>();
+                for (Component c : chckboxPanel.getComponents()) {
+                    if (c instanceof JCheckBox) {
+                        JCheckBox checkbox = (JCheckBox) c;
+                        if (checkbox.isSelected()) {
+                            selectedColumns.add(checkbox.getText());
+                        }
                     }
                 }
-            }
-            if (selectedColumns.isEmpty()) {
-                System.out.println("CheckBox Not Selected.");
-                return;
-            }
-
-            // Generate SELECT statement
-            String selectClause = "SELECT ";
-            for (String column : selectedColumns) {
-                selectClause += column + ",";
-            }
-            selectClause = selectClause.substring(0, selectClause.length() - 1);
-
+                if (selectedColumns.isEmpty()) {
+                    System.out.println("CheckBox Not Selected.");
+                    return;
+                }
+                
+                // Generate SELECT statement
+                String selectClause = "SELECT ";
+                for (String column : selectedColumns) {
+                    selectClause += column + ",";
+                }
+                selectClause = selectClause.substring(0, selectClause.length() - 1);
+                
 // Generate FROM statement
-            String fromClause = "FROM " + tableName;
+String fromClause = "FROM " + tableName;
 
 // Generate WHERE statement
-            String whereClause = "WHERE ";
-            for (Component c : chckboxPanel.getComponents()) {
-                if (c instanceof JCheckBox) {
-                    JCheckBox checkbox = (JCheckBox) c;
-                    if (checkbox.isSelected()) {
-                        String columnName = checkbox.getText();
-                        whereClause += columnName + " = true AND ";
-                    }
-                }
-            }
-            if (whereClause.endsWith("AND ")) {
-                whereClause = whereClause.substring(0, whereClause.length() - 4);
-            }
+String whereClause = "WHERE ";
+for (Component c : chckboxPanel.getComponents()) {
+    if (c instanceof JCheckBox checkbox) {
+        if (checkbox.isSelected()) {
+            String columnName = checkbox.getText();
+            whereClause += columnName + " = true AND ";
+        }
+    }
+}
+if (whereClause.endsWith("AND ")) {
+    whereClause = whereClause.substring(0, whereClause.length() - 4);
+}
 
 // Combine the clauses into a single query
-            String query = selectClause + " " + fromClause + " " + whereClause;
+String query = selectClause + " " + fromClause + " " + whereClause;
 
-            PreparedStatement pst = conn.prepareStatement(query);
-            ResultSet rs = pst.executeQuery();
+PreparedStatement pst = conn.prepareStatement(query);
+ResultSet rs = pst.executeQuery();
 
-            JasperCompileManager.compileReportToFile("report1.jrxml"); // compile the report template
+JasperCompileManager.compileReportToFile("report1.jrxml"); // compile the report template
 
-            Map<String, Object> parameters = new HashMap<String, Object>(); // create a map to store the report parameters
+Map<String, Object> parameters = new HashMap<>(); // create a map to store the report parameters
 
-            JasperPrint jasperPrint = JasperFillManager.fillReport("report1.jasper", parameters, new JRResultSetDataSource(rs)); // fill the report template with the data
+JasperPrint jasperPrint = JasperFillManager.fillReport("report1.jasper", parameters, new JRResultSetDataSource(rs)); // fill the report template with the data
 
-            JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperViewer
-
-            conn.close();
-        } catch (Exception ex) {
+JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperViewer
+            }
+        } catch (SQLException | JRException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
         }
     }
