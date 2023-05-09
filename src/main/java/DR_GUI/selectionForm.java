@@ -2,7 +2,6 @@ package DR_GUI;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.*;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.engine.xml.JRXmlWriter;
 
 import java.io.File;
@@ -17,11 +16,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class selectionForm extends javax.swing.JFrame {
 
@@ -31,6 +40,7 @@ public class selectionForm extends javax.swing.JFrame {
     private boolean tableSelected = false;
     public String dbName = "";
     private List<String> columnNames;
+    private List<String> columnClasses;
     private DefaultTableModel model2;
     private String url = "jdbc:mysql://localhost:3307/";
     private String user = "root";
@@ -77,8 +87,9 @@ public class selectionForm extends javax.swing.JFrame {
         System.out.println("\nTable Name get from Table From: " + tableName);
     }
 
-    public void setColumnNames(List<String> columnNames) {
+    public void setColumnNames(List<String> columnNames,List<String> columnClassName) {
         this.columnNames = columnNames;
+        this.columnClasses=columnClassName;
         String colMsg = "Columns Not Selected";
         if (!columnNames.isEmpty()) {
             colMsg = String.join(", ", columnNames);
@@ -112,10 +123,16 @@ public class selectionForm extends javax.swing.JFrame {
         try {
             ResultSet rs = conn.createStatement().executeQuery(query);
             ResultSetMetaData metaData = rs.getMetaData();
+            String colmClass, colName;
             // Set column headers in table
             int columnCount = metaData.getColumnCount();
             for (int i = 1; i <= columnCount; i++) {
                 model2.addColumn(metaData.getColumnLabel(i));
+                colName = metaData.getColumnLabel(i);
+                System.out.println("column  name is:: " + colName);
+                colmClass = metaData.getColumnClassName(i);
+                columnClasses.add(colmClass);
+                System.out.println(" class name of column:: " +colName+"is :: "+ colmClass);
             }
             // Add data to table
             while (rs.next()) {
@@ -341,6 +358,43 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
+  public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerConfigurationException, TransformerException {
+    try {
+        // Create a new XML document
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
+
+        // Create the root element
+        Element rootElement = doc.createElement("Fields");
+        doc.appendChild(rootElement);
+
+        // Create field elements for each column name
+        for (int i = 0; i < columnNames.size(); i++) {
+            String columnName = columnNames.get(i);
+            String columnClass = columnClasses.get(i);
+
+            Element fieldElement = doc.createElement("Field");
+            fieldElement.setAttribute("name", columnName);
+            fieldElement.setAttribute("class", columnClass);
+            rootElement.appendChild(fieldElement);
+        }
+
+        // Write the XML document to a file
+        File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\fields.xml");
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(file);
+        transformer.transform(source, result);
+
+        System.out.println("XML file generated successfully!");
+
+    } catch (ParserConfigurationException | TransformerException e) {
+    }
+}
+
+
     private void GenerateTemplateDynimcally() {
         try {
             List<DR_GUI.Field> fields = new ArrayList<>();
@@ -391,14 +445,15 @@ public class selectionForm extends javax.swing.JFrame {
             detailBand.setElementGroup(detailBand);
 
         } catch (ClassNotFoundException | FileNotFoundException | JRException ex) {
-            Logger.getLogger(selectionForm.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "error in GenerateTemplateDynimcally: "+ex.getMessage());
         }
 
     }
 
     public void printReport() throws JRException {
-
-        GenerateTemplateDynimcally();
+        try {
+            generateXML(columnNames, columnClasses);
+//        GenerateTemplateDynimcally();
 //        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
 //
 //        String query = "SELECT ";
@@ -431,6 +486,9 @@ public class selectionForm extends javax.swing.JFrame {
 //
 //        // Show the report in a viewer
 //        JasperViewer.viewReport(jasperPrint, false);
+        } catch (TransformerException ex) {
+          JOptionPane.showMessageDialog(this, "error in calling GenerateTemplateDynimcally: "+ex.getMessage());
+        }
     }
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed

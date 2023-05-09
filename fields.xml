@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<Fields><Field class="java.lang.String" name="name"/>
+<Field class="java.lang.String" name="mobileNumber"/>
+<Field class="java.lang.String" name="email"/>
+<Field class="java.lang.String" name="date"/>
+</Fields>

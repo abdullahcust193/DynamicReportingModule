@@ -13,7 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
-public class selectColumnForm extends javax.swing.JFrame {
+public final class selectColumnForm extends javax.swing.JFrame {
 
     private Connection conn;
     private String tblName;
@@ -21,10 +21,11 @@ public class selectColumnForm extends javax.swing.JFrame {
     private selectionForm select_form;
     private List<String> selectedColumns = new ArrayList<>();
     private List<String> savedSelectedColumns = new ArrayList<>();
+    private List<String> colClass;
 
     public selectColumnForm(selectionForm select_form, String selectedDb, String selectedTable) {
         initComponents();
-           setTitle("Select Columns");
+        setTitle("Select Columns");
         this.select_form = select_form;
 
         String url = "jdbc:mysql://localhost:3307/";
@@ -61,17 +62,18 @@ public class selectColumnForm extends javax.swing.JFrame {
         checkBoxPanel.removeAll();
         String query = "SELECT * from " + tableName;
         String columnName;
-
-        try (Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
+         String colCls;
+        colClass = new ArrayList<>(); // Initialize colClass list
+        try ( Statement stmt = conn.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
             ResultSetMetaData rsmd = rs.getMetaData();
-            System.out.println("\nNo of columns: " + rsmd.getColumnCount());
             int col = rsmd.getColumnCount();
-//            columnCombBx.removeAllItems();
             for (int i = 1; i <= col; i++) {
                 System.out.println(rsmd.getColumnName(i) + " ");
                 System.out.println("\n");
                 columnName = rsmd.getColumnName(i);
+                colCls = rsmd.getColumnTypeName(i);
+                
+                System.out.println("Class Name of Column : " + columnName + " is : " + colCls);
 //              columnCombBx.addItem(columnName);
                 JCheckBox checkbox = new JCheckBox(columnName);
                 // set the checkbox to selected if the column is in the saved list
@@ -193,7 +195,7 @@ public class selectColumnForm extends javax.swing.JFrame {
     private void doneColumnBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneColumnBtnActionPerformed
         List<String> selectedColumns = getSelectedColumns();
         JOptionPane.showMessageDialog(null, "Selected Columns: " + selectedColumns);
-        select_form.setColumnNames(selectedColumns);
+        select_form.setColumnNames(selectedColumns, colClass);
         select_form.fetchSelectedColumnsData();
         dispose();
     }//GEN-LAST:event_doneColumnBtnActionPerformed
