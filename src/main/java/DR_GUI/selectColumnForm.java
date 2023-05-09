@@ -45,7 +45,7 @@ public class selectColumnForm extends javax.swing.JFrame {
                 String user2 = "root";
                 String password2 = "";
                 conn = DriverManager.getConnection(url2, user2, password2);
-                getColumns(tableName);
+               
 
             } catch (SQLException ex) {
                 System.out.println("\nError with Fetching Column in ComboBox: " + ex.getMessage());
@@ -56,36 +56,7 @@ public class selectColumnForm extends javax.swing.JFrame {
         }
     }
 
-    public void getColumns(String tableName) throws SQLException {
-        // clear the checkboxesPanel before adding new checkboxes
-        checkBoxPanel.removeAll();
-        String query = "SELECT * from " + tableName;
-        String columnName;
-
-        try (Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(query)) {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            System.out.println("\nNo of columns: " + rsmd.getColumnCount());
-            int col = rsmd.getColumnCount();
-//            columnCombBx.removeAllItems();
-            for (int i = 1; i <= col; i++) {
-                System.out.println(rsmd.getColumnName(i) + " ");
-                System.out.println("\n");
-                columnName = rsmd.getColumnName(i);
-//              columnCombBx.addItem(columnName);
-                JCheckBox checkbox = new JCheckBox(columnName);
-                // set the checkbox to selected if the column is in the saved list
-                if (savedSelectedColumns.contains(columnName)) {
-                    checkbox.setSelected(true);
-                }
-                checkBoxPanel.add(checkbox);
-                checkBoxPanel.revalidate();
-                checkBoxPanel.repaint();
-            }
-            rs.close();
-            stmt.close();
-        }
-    }
+   
 
     public List<String> getSelectedColumns() {
         selectedColumns.clear();
