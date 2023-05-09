@@ -1,6 +1,13 @@
 package DR_GUI;
 
-import Classes.Student;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.design.*;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.engine.xml.JRXmlWriter;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -14,18 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRResultSetDataSource;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
-import net.sf.jasperreports.engine.design.JRDesignDataset;
-import net.sf.jasperreports.engine.design.JRDesignField;
-import net.sf.jasperreports.engine.design.JRDesignQuery;
-import net.sf.jasperreports.engine.design.JasperDesign;
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 
 public class selectionForm extends javax.swing.JFrame {
@@ -346,39 +341,96 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
-    public void printReport() throws JRException {
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
-       
-        String query = "SELECT ";
-        int numColumns = mainTable.getColumnCount();
-        for (int i = 0; i < numColumns; i++) {
-            query += mainTable.getColumnName(i);
-            if (i != numColumns - 1) {
-                query += ", ";
-            }
-        }
-        query += " FROM " + tableName; // replace 'myTable' with the name of your table
-        // Create the JRDesignQuery object and set the query text
-        // JRDesignQuery jrQuery = new JRDesignQuery();
-        // jrQuery.setText(query);
-        // Set the query for the JasperDesign object
-        // design.setQuery(jrQuery);
-        System.out.println("Generated query = " + query);
-        JRResultSetDataSource dataList = getData(query);
-        // Compile the JRXML file
-        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
-        // Create a HashMap to hold the report parameters
-        HashMap<String, Object> parameters = new HashMap<>();
-        // Get the column names from the JTable
-        String[] columnNames = new String[mainTable.getColumnCount()];
-        for (int i = 0; i < columnNames.length; i++) {
-            columnNames[i] = mainTable.getColumnName(i);
-        }   
-        // Fill the report with data
-        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+    private void GenerateTemplateDynimcally() {
+        try {
+            List<DR_GUI.Field> fields = new ArrayList<>();
+            fields.add(new DR_GUI.Field("id", "java.lang.Integer"));
+            fields.add(new DR_GUI.Field("name", "java.lang.String"));
+            fields.add(new DR_GUI.Field("age", "java.lang.Integer"));
+            fields.add(new DR_GUI.Field("registration_no", "java.lang.String"));
+            fields.add(new DR_GUI.Field("registration_ID", "java.lang.String"));
 
-        // Show the report in a viewer
-        JasperViewer.viewReport(jasperPrint, false);
+            // Generate the JRXML file dynamically
+            JasperDesign jasperDesign = new JasperDesign();
+            jasperDesign.setName("DynamicDataReport");
+            jasperDesign.setPageWidth(595);
+            jasperDesign.setPageHeight(842);
+            jasperDesign.setColumnWidth(555);
+            jasperDesign.setLeftMargin(20);
+            jasperDesign.setRightMargin(20);
+            jasperDesign.setTopMargin(20);
+            jasperDesign.setBottomMargin(20);
+
+            //  JRDesignBand detailBand = new JRDesignBand();
+            //  detailBand.setElementGroup(detailBand);
+            JRDesignBand detailBand = new JRDesignBand();
+            detailBand.setHeight(30);
+
+            // Add fields to the report design
+            for (DR_GUI.Field field : fields) {
+                JRDesignField jrField = new JRDesignField();
+                jrField.setName(field.getName());
+                jrField.setValueClass(Class.forName(field.getClassName()));
+                jasperDesign.addField(jrField);
+
+                JRDesignTextField textField = new JRDesignTextField();
+                textField.setX(0);
+                textField.setY(0);
+                textField.setWidth(100);
+                textField.setHeight(30);
+                textField.setExpression(new JRDesignExpression("$F{" + field.getName() + "}"));
+
+                // JRDesignBand detailBand = jasperDesign.getDetail().get(0);
+                detailBand.addElement(textField);
+
+                // Save the compiled report to a Jasper file
+                JRXmlWriter.writeReport(jasperDesign, new FileOutputStream(new File("DynamicDataReport.jrxml")), "UTF-8");
+                System.out.println("DynamicDataReport.jrxml generated successfully.");
+
+            }
+            detailBand.setElementGroup(detailBand);
+
+        } catch (ClassNotFoundException | FileNotFoundException | JRException ex) {
+            Logger.getLogger(selectionForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void printReport() throws JRException {
+
+        GenerateTemplateDynimcally();
+//        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+//
+//        String query = "SELECT ";
+//        int numColumns = mainTable.getColumnCount();
+//        for (int i = 0; i < numColumns; i++) {
+//            query += mainTable.getColumnName(i);
+//            if (i != numColumns - 1) {
+//                query += ", ";
+//            }
+//        }
+//        query += " FROM " + tableName; // replace 'myTable' with the name of your table
+//        // Create the JRDesignQuery object and set the query text
+//        // JRDesignQuery jrQuery = new JRDesignQuery();
+//        // jrQuery.setText(query);
+//        // Set the query for the JasperDesign object
+//        // design.setQuery(jrQuery);
+//        System.out.println("Generated query = " + query);
+//        JRResultSetDataSource dataList = getData(query);
+//        // Compile the JRXML file
+//        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
+//        // Create a HashMap to hold the report parameters
+//        HashMap<String, Object> parameters = new HashMap<>();
+//        // Get the column names from the JTable
+//        String[] columnNames = new String[mainTable.getColumnCount()];
+//        for (int i = 0; i < columnNames.length; i++) {
+//            columnNames[i] = mainTable.getColumnName(i);
+//        }
+//        // Fill the report with data
+//        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+//
+//        // Show the report in a viewer
+//        JasperViewer.viewReport(jasperPrint, false);
     }
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
@@ -412,4 +464,5 @@ public class selectionForm extends javax.swing.JFrame {
     private javax.swing.JLabel showColumnsLbl;
     private javax.swing.JLabel tblSelectMsg;
     // End of variables declaration//GEN-END:variables
+
 }

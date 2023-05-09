@@ -1,25 +1,16 @@
-<!-- template.jrxml -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-               name="DynamicDataReport"
-               pageWidth="595"
-               pageHeight="842"
-               columnWidth="555"
-               leftMargin="20"
-               rightMargin="20"
-               topMargin="20"
-               bottomMargin="20">
-
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DynamicDataReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="dc3c17a5-bd65-4295-85ee-c39787617e1d">
+    <property name="ireport.zoom" value="1.0"/>
+    <property name="ireport.x" value="0"/>
+    <property name="ireport.y" value="0"/>
     <field name="id" class="java.lang.Integer"/>
     <field name="name" class="java.lang.String"/>
     <field name="age" class="java.lang.Integer"/>
     <field name="registration_no" class="java.lang.String"/>
-
     <title>
         <band height="50">
             <textField>
-                <reportElement x="0" y="10" width="555" height="30"/>
+                <reportElement x="0" y="10" width="555" height="30" uuid="86fc9e26-06ea-4ff5-8e19-9d2f15c1b628"/>
                 <textElement textAlignment="Center">
                     <font size="18" isBold="true"/>
                 </textElement>
@@ -27,32 +18,31 @@
             </textField>
         </band>
     </title>
-
     <detail>
         <band height="30">
             <textField>
-                <reportElement x="0" y="0" width="100" height="30"/>
+                <reportElement x="0" y="0" width="100" height="30" uuid="df1164e5-3856-40eb-b929-79f5a100b343"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="100" y="0" width="175" height="30"/>
+                <reportElement x="100" y="0" width="175" height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="275" y="0" width="100" height="30"/>
+                <reportElement x="275" y="0" width="100" height="30" uuid="02024d4c-2dc2-4edc-b096-f7c551c48843"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
                 <textFieldExpression><![CDATA[$F{age}]]></textFieldExpression>
             </textField>
             <textField>
-                <reportElement x="375" y="0" width="180" height="30"/>
+                <reportElement x="375" y="0" width="180" height="30" uuid="671caf4a-0a50-48a7-946b-08613d119fcb"/>
                 <textElement>
                     <font size="12"/>
                 </textElement>
@@ -60,5 +50,4 @@
             </textField>
         </band>
     </detail>
-
 </jasperReport>
