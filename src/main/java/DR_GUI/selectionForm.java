@@ -31,6 +31,15 @@ import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class selectionForm extends javax.swing.JFrame {
 
@@ -87,9 +96,9 @@ public class selectionForm extends javax.swing.JFrame {
         System.out.println("\nTable Name get from Table From: " + tableName);
     }
 
-    public void setColumnNames(List<String> columnNames,List<String> columnClassName) {
+    public void setColumnNames(List<String> columnNames, List<String> columnClassName) {
         this.columnNames = columnNames;
-        this.columnClasses=columnClassName;
+        this.columnClasses = columnClassName;
         String colMsg = "Columns Not Selected";
         if (!columnNames.isEmpty()) {
             colMsg = String.join(", ", columnNames);
@@ -132,7 +141,7 @@ public class selectionForm extends javax.swing.JFrame {
                 System.out.println("column  name is:: " + colName);
                 colmClass = metaData.getColumnClassName(i);
                 columnClasses.add(colmClass);
-                System.out.println(" class name of column:: " +colName+"is :: "+ colmClass);
+                System.out.println(" class name of column:: " + colName + "is :: " + colmClass);
             }
             // Add data to table
             while (rs.next()) {
@@ -358,166 +367,203 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
- public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerConfigurationException, TransformerException {
-    try {
-        // Create a new XML document
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
-
-        // Create the root element
-        Element rootElement = doc.createElement("Fields");
-        doc.appendChild(rootElement);
-
-        // Create field elements for each column name
-        for (int i = 0; i < columnNames.size(); i++) {
-            String columnName = columnNames.get(i);
-            String columnClass = columnClasses.get(i);
-
-            Element fieldElement = doc.createElement("Field");
-            fieldElement.setAttribute("name", columnName);
-            fieldElement.setAttribute("class", columnClass);
-            rootElement.appendChild(fieldElement);
-
-            // Create textField element
-            Element textFieldElement = doc.createElement("textField");
-            fieldElement.appendChild(textFieldElement);
-
-            // Create reportElement element
-            Element reportElementElement = doc.createElement("reportElement");
-            reportElementElement.setAttribute("x", "100");
-            reportElementElement.setAttribute("y", "0");
-            reportElementElement.setAttribute("width", "175");
-            reportElementElement.setAttribute("height", "30");
-            reportElementElement.setAttribute("uuid", "f708ed29-d9b0-465b-a8de-0a79576abd0f");
-            textFieldElement.appendChild(reportElementElement);
-
-            // Create textElement element
-            Element textElementElement = doc.createElement("textElement");
-            textFieldElement.appendChild(textElementElement);
-
-            // Create font element
-            Element fontElement = doc.createElement("font");
-            fontElement.setAttribute("size", "12");
-            textElementElement.appendChild(fontElement);
-
-            // Create textFieldExpression element
-            Element textFieldExpressionElement = doc.createElement("textFieldExpression");
-            textFieldExpressionElement.setTextContent("$F{" + columnName + "}");
-            textFieldElement.appendChild(textFieldExpressionElement);
-        }
-
-        // Write the XML document to a file
-        File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\fields.xml");
-        TransformerFactory transformerFactory = TransformerFactory.newInstance();
-        Transformer transformer = transformerFactory.newTransformer();
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(file);
-        transformer.transform(source, result);
-
-        System.out.println("XML file generated successfully!");
-
-    } catch (ParserConfigurationException | TransformerException e) {
-        // Handle exceptions
-    }
-}
-
-
-
-
-    private void GenerateTemplateDynimcally() {
+    public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
         try {
-            List<DR_GUI.Field> fields = new ArrayList<>();
-            fields.add(new DR_GUI.Field("id", "java.lang.Integer"));
-            fields.add(new DR_GUI.Field("name", "java.lang.String"));
-            fields.add(new DR_GUI.Field("age", "java.lang.Integer"));
-            fields.add(new DR_GUI.Field("registration_no", "java.lang.String"));
-            fields.add(new DR_GUI.Field("registration_ID", "java.lang.String"));
+            // Create a new XML document
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
 
-            // Generate the JRXML file dynamically
-            JasperDesign jasperDesign = new JasperDesign();
-            jasperDesign.setName("DynamicDataReport");
-            jasperDesign.setPageWidth(595);
-            jasperDesign.setPageHeight(842);
-            jasperDesign.setColumnWidth(555);
-            jasperDesign.setLeftMargin(20);
-            jasperDesign.setRightMargin(20);
-            jasperDesign.setTopMargin(20);
-            jasperDesign.setBottomMargin(20);
+            // Create the root element
+            Element rootElement = doc.createElement("jasperReport");
+            rootElement.setAttribute("xmlns", "http://jasperreports.sourceforge.net/jasperreports");
+            rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            rootElement.setAttribute("xsi:schemaLocation", "http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd");
+            rootElement.setAttribute("name", "DynamicDataReport");
+            rootElement.setAttribute("pageWidth", "595");
+            rootElement.setAttribute("pageHeight", "842");
+            rootElement.setAttribute("columnWidth", "555");
+            rootElement.setAttribute("leftMargin", "20");
+            rootElement.setAttribute("rightMargin", "20");
+            rootElement.setAttribute("topMargin", "20");
+            rootElement.setAttribute("bottomMargin", "20");
+            doc.appendChild(rootElement);
 
-            //  JRDesignBand detailBand = new JRDesignBand();
-            //  detailBand.setElementGroup(detailBand);
-            JRDesignBand detailBand = new JRDesignBand();
-            detailBand.setHeight(30);
+            // Create title band
+            Element titleElement = doc.createElement("title");
+            rootElement.appendChild(titleElement);
 
-            // Add fields to the report design
-            for (DR_GUI.Field field : fields) {
-                JRDesignField jrField = new JRDesignField();
-                jrField.setName(field.getName());
-                jrField.setValueClass(Class.forName(field.getClassName()));
-                jasperDesign.addField(jrField);
+            Element titleBandElement = doc.createElement("band");
+            titleBandElement.setAttribute("height", "50");
+            titleElement.appendChild(titleBandElement);
 
-                JRDesignTextField textField = new JRDesignTextField();
-                textField.setX(0);
-                textField.setY(0);
-                textField.setWidth(100);
-                textField.setHeight(30);
-                textField.setExpression(new JRDesignExpression("$F{" + field.getName() + "}"));
+            Element staticTextElement = doc.createElement("staticText");
+            titleBandElement.appendChild(staticTextElement);
 
-                // JRDesignBand detailBand = jasperDesign.getDetail().get(0);
-                detailBand.addElement(textField);
+            Element reportElementElement = doc.createElement("reportElement");
+            reportElementElement.setAttribute("x", "0");
+            reportElementElement.setAttribute("y", "0");
+            reportElementElement.setAttribute("width", "555");
+            reportElementElement.setAttribute("height", "30");
+            reportElementElement.setAttribute("forecolor", "#FF0000");
+            reportElementElement.setAttribute("backcolor", "#FFFF00");
+            staticTextElement.appendChild(reportElementElement);
 
-                // Save the compiled report to a Jasper file
-                JRXmlWriter.writeReport(jasperDesign, new FileOutputStream(new File("DynamicDataReport.jrxml")), "UTF-8");
-                System.out.println("DynamicDataReport.jrxml generated successfully.");
+            Element textElement = doc.createElement("text");
+            textElement.setTextContent("Professional Report Title");
+            staticTextElement.appendChild(textElement);
 
+            // Create detail band
+            Element detailElement = doc.createElement("detail");
+            rootElement.appendChild(detailElement);
+
+            Element detailBandElement = doc.createElement("band");
+            detailBandElement.setAttribute("height", "30");
+            detailElement.appendChild(detailBandElement);
+
+            // Create field elements for each column name
+            for (int i = 0; i < columnNames.size(); i++) {
+                String columnName = columnNames.get(i);
+                String columnClass = columnClasses.get(i);
+
+                // Create field element
+                Element fieldElement = doc.createElement("field");
+                fieldElement.setAttribute("name", columnName);
+                fieldElement.setAttribute("class", columnClass);
+                rootElement.appendChild(fieldElement);
+
+                // Create textField element
+                Element textFieldElement = doc.createElement("textField");
+                detailBandElement.appendChild(textFieldElement);
+              
+                reportElementElement.setAttribute("x", "100");
+                reportElementElement.setAttribute("y", "0");
+                reportElementElement.setAttribute("width", "175");
+                reportElementElement.setAttribute("height", "30");
+                reportElementElement.setAttribute("uuid", "f708ed29-d9b0-465b-a8de-0a79576abd0f");
+                textFieldElement.appendChild(reportElementElement);
+
+                // Create textElement element
+                Element textElementElement = doc.createElement("textElement");
+                textFieldElement.appendChild(textElementElement);
+
+                // Create font element
+                Element fontElement = doc.createElement("font");
+                fontElement.setAttribute("size", "12");
+                textElementElement.appendChild(fontElement);
+
+                // Create textFieldExpression element
+                Element textFieldExpressionElement = doc.createElement("textFieldExpression");
+                textFieldExpressionElement.setTextContent("$F{" + columnName + "}");
+                textFieldElement.appendChild(textFieldExpressionElement);
             }
-            detailBand.setElementGroup(detailBand);
 
-        } catch (ClassNotFoundException | FileNotFoundException | JRException ex) {
-            JOptionPane.showMessageDialog(this, "error in GenerateTemplateDynimcally: "+ex.getMessage());
+            // Write the XML document to a file
+            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\fields.xml");
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+
+            System.out.println("XML file generated successfully!");
+        } catch (ParserConfigurationException | TransformerException e) {
+            // Handle exceptions
         }
-
     }
 
+//    private void GenerateTemplateDynimcally() {
+//        try {
+//            List<DR_GUI.Field> fields = new ArrayList<>();
+//            fields.add(new DR_GUI.Field("id", "java.lang.Integer"));
+//            fields.add(new DR_GUI.Field("name", "java.lang.String"));
+//            fields.add(new DR_GUI.Field("age", "java.lang.Integer"));
+//            fields.add(new DR_GUI.Field("registration_no", "java.lang.String"));
+//            fields.add(new DR_GUI.Field("registration_ID", "java.lang.String"));
+//
+//            // Generate the JRXML file dynamically
+//            JasperDesign jasperDesign = new JasperDesign();
+//            jasperDesign.setName("DynamicDataReport");
+//            jasperDesign.setPageWidth(595);
+//            jasperDesign.setPageHeight(842);
+//            jasperDesign.setColumnWidth(555);
+//            jasperDesign.setLeftMargin(20);
+//            jasperDesign.setRightMargin(20);
+//            jasperDesign.setTopMargin(20);
+//            jasperDesign.setBottomMargin(20);
+//
+//            //  JRDesignBand detailBand = new JRDesignBand();
+//            //  detailBand.setElementGroup(detailBand);
+//            JRDesignBand detailBand = new JRDesignBand();
+//            detailBand.setHeight(30);
+//
+//            // Add fields to the report design
+//            for (DR_GUI.Field field : fields) {
+//                JRDesignField jrField = new JRDesignField();
+//                jrField.setName(field.getName());
+//                jrField.setValueClass(Class.forName(field.getClassName()));
+//                jasperDesign.addField(jrField);
+//
+//                JRDesignTextField textField = new JRDesignTextField();
+//                textField.setX(0);
+//                textField.setY(0);
+//                textField.setWidth(100);
+//                textField.setHeight(30);
+//                textField.setExpression(new JRDesignExpression("$F{" + field.getName() + "}"));
+//
+//                // JRDesignBand detailBand = jasperDesign.getDetail().get(0);
+//                detailBand.addElement(textField);
+//
+//                // Save the compiled report to a Jasper file
+//                JRXmlWriter.writeReport(jasperDesign, new FileOutputStream(new File("DynamicDataReport.jrxml")), "UTF-8");
+//                System.out.println("DynamicDataReport.jrxml generated successfully.");
+//
+//            }
+//            detailBand.setElementGroup(detailBand);
+//
+//        } catch (ClassNotFoundException | FileNotFoundException | JRException ex) {
+//            JOptionPane.showMessageDialog(this, "error in GenerateTemplateDynimcally: " + ex.getMessage());
+//        }
+//
+//    }
     public void printReport() throws JRException {
         try {
             generateXML(columnNames, columnClasses);
 //        GenerateTemplateDynimcally();
-//        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
-//
-//        String query = "SELECT ";
-//        int numColumns = mainTable.getColumnCount();
-//        for (int i = 0; i < numColumns; i++) {
-//            query += mainTable.getColumnName(i);
-//            if (i != numColumns - 1) {
-//                query += ", ";
-//            }
-//        }
-//        query += " FROM " + tableName; // replace 'myTable' with the name of your table
-//        // Create the JRDesignQuery object and set the query text
-//        // JRDesignQuery jrQuery = new JRDesignQuery();
-//        // jrQuery.setText(query);
-//        // Set the query for the JasperDesign object
-//        // design.setQuery(jrQuery);
-//        System.out.println("Generated query = " + query);
-//        JRResultSetDataSource dataList = getData(query);
-//        // Compile the JRXML file
-//        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
-//        // Create a HashMap to hold the report parameters
-//        HashMap<String, Object> parameters = new HashMap<>();
-//        // Get the column names from the JTable
-//        String[] columnNames = new String[mainTable.getColumnCount()];
-//        for (int i = 0; i < columnNames.length; i++) {
-//            columnNames[i] = mainTable.getColumnName(i);
-//        }
-//        // Fill the report with data
-//        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
-//
-//        // Show the report in a viewer
-//        JasperViewer.viewReport(jasperPrint, false);
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+
+        String query = "SELECT ";
+        int numColumns = mainTable.getColumnCount();
+        for (int i = 0; i < numColumns; i++) {
+            query += mainTable.getColumnName(i);
+            if (i != numColumns - 1) {
+                query += ", ";
+            }
+        }
+        query += " FROM " + tableName; // replace 'myTable' with the name of your table
+        // Create the JRDesignQuery object and set the query text
+        // JRDesignQuery jrQuery = new JRDesignQuery();
+        // jrQuery.setText(query);
+        // Set the query for the JasperDesign object
+        // design.setQuery(jrQuery);
+        System.out.println("Generated query = " + query);
+        JRResultSetDataSource dataList = getData(query);
+        // Compile the JRXML file
+        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
+        // Create a HashMap to hold the report parameters
+        HashMap<String, Object> parameters = new HashMap<>();
+        // Get the column names from the JTable
+        String[] columnNames = new String[mainTable.getColumnCount()];
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNames[i] = mainTable.getColumnName(i);
+        }
+        // Fill the report with data
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+
+        // Show the report in a viewer
+        JasperViewer.viewReport(jasperPrint, false);
         } catch (TransformerException ex) {
-          JOptionPane.showMessageDialog(this, "error in calling GenerateTemplateDynimcally: "+ex.getMessage());
+            JOptionPane.showMessageDialog(this, "error in calling GenerateTemplateDynimcally: " + ex.getMessage());
         }
     }
 
