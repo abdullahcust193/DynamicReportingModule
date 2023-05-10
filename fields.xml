@@ -1,1 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bottomMargin="20" columnWidth="555" leftMargin="20" name="DynamicDataReport" pageHeight="842" pageWidth="595" rightMargin="20" topMargin="20" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"><title><band height="50"><staticText><text>Professional Report Title</text></staticText></band></title><detail><band height="30"><textField><textElement><font size="12"/></textElement><textFieldExpression>$F{cid}</textFieldExpression></textField><textField><reportElement backcolor="#FFFF00" forecolor="#FF0000" height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/><textElement><font size="12"/></textElement><textFieldExpression>$F{cityname}</textFieldExpression></textField></band></detail><field class="java.lang.Integer" name="cid"/><field class="java.lang.String" name="cityname"/></jasperReport>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bottomMargin="20" columnWidth="555" leftMargin="20" name="DynamicDataReport" pageHeight="842" pageWidth="595" rightMargin="20" topMargin="20" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd">
+<title>
+<band height="50">
+<staticText>
+<text>Professional Report Title</text>
+</staticText>
+</band>
+</title>
+<detail>
+<band height="30">
+<textField>
+<textElement>
+<font size="12"/>
+</textElement>
+<textFieldExpression>$F{lastname}</textFieldExpression>
+</textField>
+<textField>
+<textElement>
+<font size="12"/>
+</textElement>
+<textFieldExpression>$F{username}</textFieldExpression>
+</textField>
+<textField>
+<reportElement backcolor="#FFFF00" forecolor="#FF0000" height="30" uuid="f708ed29-d9b0-465b-a8de-0a79576abd0f" width="175" x="100" y="0"/>
+<textElement>
+<font size="12"/>
+</textElement>
+<textFieldExpression>$F{password}</textFieldExpression>
+</textField>
+</band>
+</detail>
+<field class="java.lang.String" name="lastname"/>
+<field class="java.lang.String" name="username"/>
+<field class="java.lang.String" name="password"/>
+</jasperReport>
