@@ -15,4 +15,5 @@ public class NewClass {
     int k;
     int d;
     int f;
+    int love;
 }
