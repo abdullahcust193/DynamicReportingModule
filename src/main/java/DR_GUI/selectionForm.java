@@ -482,7 +482,7 @@ public class selectionForm extends javax.swing.JFrame {
                 textFieldExpressionElement2.appendChild(cdata2);
                 textFieldElement2.appendChild(textFieldExpressionElement2);
             }
-            
+
             detailElement.appendChild(detailBandElement);
             // Write the XML document to a file
             File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
