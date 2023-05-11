@@ -473,7 +473,7 @@ public class selectionForm extends javax.swing.JFrame {
             }
 
             // Write the XML document to a file
-            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.xml");
+            File file = new File("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.xml");
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -491,7 +491,7 @@ public class selectionForm extends javax.swing.JFrame {
 //        try {
         generateXML(columnNames, columnClasses);
 
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
 
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
