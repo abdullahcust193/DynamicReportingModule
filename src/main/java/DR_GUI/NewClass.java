@@ -9,5 +9,5 @@ package DR_GUI;
  * @author hp
  */
 public class NewClass {
-    
+    public int a;
 }
