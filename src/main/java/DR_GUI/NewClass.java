@@ -10,4 +10,5 @@ package DR_GUI;
  */
 public class NewClass {
     public int a;
+     public int b;
 }
