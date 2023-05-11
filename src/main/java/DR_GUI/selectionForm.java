@@ -17,6 +17,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -24,7 +26,13 @@ import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import net.sf.jasperreports.view.JasperViewer;
+import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 =======
 import javax.xml.parsers.DocumentBuilder;
@@ -537,7 +545,7 @@ public class selectionForm extends javax.swing.JFrame {
         JasperViewer.viewReport(jasperPrint, false);
     }
 
-    private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
+    private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {                                         
 //        try {
         // TODO add your handling code here:
 //            printReport();
