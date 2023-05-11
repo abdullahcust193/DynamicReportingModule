@@ -40,6 +40,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -386,9 +387,8 @@ public class selectionForm extends javax.swing.JFrame {
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
 
-            // Create the root element
-            Element rootElement = doc.createElement("jasperReport");
-            rootElement.setAttribute("xmlns", "http://jasperreports.sourceforge.net/jasperreports");
+            // Create the root element with XML declaration
+            Element rootElement = doc.createElementNS("http://jasperreports.sourceforge.net/jasperreports", "jasperReport");
             rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
             rootElement.setAttribute("xsi:schemaLocation", "http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd");
             rootElement.setAttribute("name", "DynamicDataReport");
@@ -401,6 +401,15 @@ public class selectionForm extends javax.swing.JFrame {
             rootElement.setAttribute("bottomMargin", "20");
             doc.appendChild(rootElement);
 
+            for (int i = 0; i < columnNames.size(); i++) {
+                String columnName = columnNames.get(i);
+                String columnClass = columnClasses.get(i);
+                // Create field element
+                Element fieldElement = doc.createElement("field");
+                fieldElement.setAttribute("name", columnName);
+                fieldElement.setAttribute("class", columnClass);
+                rootElement.appendChild(fieldElement);
+            }
             // Create title band
             Element titleElement = doc.createElement("title");
             rootElement.appendChild(titleElement);
@@ -413,12 +422,7 @@ public class selectionForm extends javax.swing.JFrame {
             titleBandElement.appendChild(staticTextElement);
 
             Element reportElementElement = doc.createElement("reportElement");
-            reportElementElement.setAttribute("x", "0");
-            reportElementElement.setAttribute("y", "0");
-            reportElementElement.setAttribute("width", "555");
-            reportElementElement.setAttribute("height", "30");
-            reportElementElement.setAttribute("forecolor", "#FF0000");
-            reportElementElement.setAttribute("backcolor", "#FFFF00");
+
             staticTextElement.appendChild(reportElementElement);
 
             Element textElement = doc.createElement("text");
@@ -438,21 +442,18 @@ public class selectionForm extends javax.swing.JFrame {
 
                 String columnName = columnNames.get(i);
                 String columnClass = columnClasses.get(i);
-                // Create field element
-                Element fieldElement = doc.createElement("field");
-                fieldElement.setAttribute("name", columnName);
-                fieldElement.setAttribute("class", columnClass);
-                rootElement.appendChild(fieldElement);
 
                 // Create textField element
                 Element textFieldElement = doc.createElement("textField");
+                Element textFieldReportElement = doc.createElement("reportElement");
+                textFieldElement.appendChild(textFieldReportElement);
                 detailBandElement.appendChild(textFieldElement);
 
-                reportElementElement.setAttribute("x", "100");
-                reportElementElement.setAttribute("y", "0");
-                reportElementElement.setAttribute("width", "175");
-                reportElementElement.setAttribute("height", "30");
-                reportElementElement.setAttribute("uuid", "f708ed29-d9b0-465b-a8de-0a79576abd0f");
+                textFieldReportElement.setAttribute("x", String.valueOf(100 * i));
+                textFieldReportElement.setAttribute("y", "0");
+                textFieldReportElement.setAttribute("width", "100");
+                textFieldReportElement.setAttribute("height", "30");
+
                 textFieldElement.appendChild(reportElementElement);
 
                 // Create textElement element
@@ -466,7 +467,8 @@ public class selectionForm extends javax.swing.JFrame {
 
                 // Create textFieldExpression element
                 Element textFieldExpressionElement = doc.createElement("textFieldExpression");
-                textFieldExpressionElement.setTextContent("$F{" + columnName + "}");
+                CDATASection cdata = doc.createCDATASection("$F{" + columnName + "}");
+                textFieldExpressionElement.appendChild(cdata);
                 textFieldElement.appendChild(textFieldExpressionElement);
             }
 
