@@ -3,11 +3,6 @@ package DR_GUI;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.*;
 
-import net.sf.jasperreports.engine.xml.JRXmlLoader;
-import org.w3c.dom.Element;
-
-import net.sf.jasperreports.engine.xml.JRXmlWriter;
-
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,29 +12,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import net.sf.jasperreports.view.JasperViewer;
 import org.w3c.dom.Node;
-=======
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 import net.sf.jasperreports.view.JasperViewer;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.Transformer;
@@ -49,7 +31,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 
 public class selectionForm extends javax.swing.JFrame {
 
@@ -122,7 +103,7 @@ public class selectionForm extends javax.swing.JFrame {
         model2 = (DefaultTableModel) mainTable.getModel();
         model2.setRowCount(0);
         model2.setColumnCount(0); // Clear column headers
-        if (columnNames.isEmpty() || tableName == null || tableName.isEmpty()) {
+        if (columnNames.isEmpty() || tableName == null || tableName.isEmpty() || columnNames == null) {
             System.out.println("No columns or table selected.");
             return;
         }
@@ -387,10 +368,6 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
-
-    private void GenerateTemplateDynimcally() {
-
-
     public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
         try {
             // Create a new XML document
@@ -499,11 +476,9 @@ public class selectionForm extends javax.swing.JFrame {
 
     public void printReport() throws JRException, TransformerException {
 //        try {
-            generateXML(columnNames, columnClasses);
+        generateXML(columnNames, columnClasses);
 
-
-        GenerateTemplateDynimcally();
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\DynamicDataReport.jrxml");
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
 
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
@@ -537,53 +512,6 @@ public class selectionForm extends javax.swing.JFrame {
         JasperViewer.viewReport(jasperPrint, false);
     }
 
-    private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
-//        try {
-        // TODO add your handling code here:
-//            printReport();
-        generateXML(columnNames);
-        System.out.println("col names: " + columnNames);
-//        } catch (JRException ex) {
-//            JOptionPane.showMessageDialog(this, "Jasper error." + ex.getMessage());
-//            System.out.println("Jasper error= " + ex.getMessage());
-//        }
-
-//            JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
-//
-//            String query = "SELECT ";
-//            int numColumns = mainTable.getColumnCount();
-//            for (int i = 0; i < numColumns; i++) {
-//                query += mainTable.getColumnName(i);
-//                if (i != numColumns - 1) {
-//                    query += ", ";
-//                }
-//            }
-//            query += " FROM " + tableName; // replace 'myTable' with the name of your table
-//            // Create the JRDesignQuery object and set the query text
-//            // JRDesignQuery jrQuery = new JRDesignQuery();
-//            // jrQuery.setText(query);
-//            // Set the query for the JasperDesign object
-//            // design.setQuery(jrQuery);
-//            System.out.println("Generated query = " + query);
-//            JRResultSetDataSource dataList = getData(query);
-//            // Compile the JRXML file
-//            JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
-//            // Create a HashMap to hold the report parameters
-//            HashMap<String, Object> parameters = new HashMap<>();
-//            // Get the column names from the JTable
-//            String[] columnNames = new String[mainTable.getColumnCount()];
-//            for (int i = 0; i < columnNames.length; i++) {
-//                columnNames[i] = mainTable.getColumnName(i);
-//            }
-//            // Fill the report with data
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
-//
-//            // Show the report in a viewer
-//            JasperViewer.viewReport(jasperPrint, false);
-//        } catch (TransformerException ex) {
-//            JOptionPane.showMessageDialog(this, "error in calling GenerateTemplateDynimcally: " + ex.getMessage());
-//        }
-    }
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
         try {
