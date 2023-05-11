@@ -60,7 +60,7 @@ public class DBform extends javax.swing.JFrame {
                     System.out.println("\nError with Fetching Tables in ComboBox: " + ex.getMessage());
                 }
             });
-  
+
             tableCombBx.addActionListener(e -> {
                 try {
                     String databaseName = (String) dbCombBox.getSelectedItem();
@@ -235,44 +235,44 @@ public class DBform extends javax.swing.JFrame {
                     System.out.println("CheckBox Not Selected.");
                     return;
                 }
-                
+
                 // Generate SELECT statement
                 String selectClause = "SELECT ";
                 for (String column : selectedColumns) {
                     selectClause += column + ",";
                 }
                 selectClause = selectClause.substring(0, selectClause.length() - 1);
-                
+
 // Generate FROM statement
-String fromClause = "FROM " + tableName;
+                String fromClause = "FROM " + tableName;
 
 // Generate WHERE statement
-String whereClause = "WHERE ";
-for (Component c : chckboxPanel.getComponents()) {
-    if (c instanceof JCheckBox checkbox) {
-        if (checkbox.isSelected()) {
-            String columnName = checkbox.getText();
-            whereClause += columnName + " = true AND ";
-        }
-    }
-}
-if (whereClause.endsWith("AND ")) {
-    whereClause = whereClause.substring(0, whereClause.length() - 4);
-}
+                String whereClause = "WHERE ";
+                for (Component c : chckboxPanel.getComponents()) {
+                    if (c instanceof JCheckBox checkbox) {
+                        if (checkbox.isSelected()) {
+                            String columnName = checkbox.getText();
+                            whereClause += columnName + " = true AND ";
+                        }
+                    }
+                }
+                if (whereClause.endsWith("AND ")) {
+                    whereClause = whereClause.substring(0, whereClause.length() - 4);
+                }
 
 // Combine the clauses into a single query
-String query = selectClause + " " + fromClause + " " + whereClause;
+                String query = selectClause + " " + fromClause + " " + whereClause;
 
-PreparedStatement pst = conn.prepareStatement(query);
-ResultSet rs = pst.executeQuery();
+                PreparedStatement pst = conn.prepareStatement(query);
+                ResultSet rs = pst.executeQuery();
 
-JasperCompileManager.compileReportToFile("report1.jrxml"); // compile the report template
+                JasperCompileManager.compileReportToFile("report1.jrxml"); // compile the report template
 
-Map<String, Object> parameters = new HashMap<>(); // create a map to store the report parameters
+                Map<String, Object> parameters = new HashMap<>(); // create a map to store the report parameters
 
-JasperPrint jasperPrint = JasperFillManager.fillReport("report1.jasper", parameters, new JRResultSetDataSource(rs)); // fill the report template with the data
+                JasperPrint jasperPrint = JasperFillManager.fillReport("report1.jasper", parameters, new JRResultSetDataSource(rs)); // fill the report template with the data
 
-JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperViewer
+                JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperViewer
             }
         } catch (SQLException | JRException ex) {
             JOptionPane.showMessageDialog(null, ex.getMessage());
@@ -604,7 +604,7 @@ JasperViewer.viewReport(jasperPrint, false); // show the report in the JasperVie
 
 
     }//GEN-LAST:event_tableDBMouseClicked
-    
+
 
     private void columnCombBxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnCombBxActionPerformed
         // TODO add your handling code here:
