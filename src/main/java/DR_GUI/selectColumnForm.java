@@ -33,8 +33,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
         String password = "";
         tblName = selectedTable;
         dbname = selectedDb;
-//      checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
-//      checkBoxPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
         checkBoxPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         try {
@@ -46,26 +45,24 @@ public final class selectColumnForm extends javax.swing.JFrame {
                 String user2 = "root";
                 String password2 = "";
                 conn = DriverManager.getConnection(url2, user2, password2);
-               
-
+                getColumns(selectedTable);
             } catch (SQLException ex) {
                 System.out.println("\nError with Fetching Column in ComboBox: " + ex.getMessage());
             }
-
+            
         } catch (SQLException e) {
             System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
     }
-
 
     public void getColumns(String tableName) throws SQLException {
         // clear the checkboxesPanel before adding new checkboxes
         checkBoxPanel.removeAll();
         String query = "SELECT * from " + tableName;
         String columnName;
-         String colCls;
+        String colCls;
         colClass = new ArrayList<>(); // Initialize colClass list
-        try ( Statement stmt = conn.createStatement();  ResultSet rs = stmt.executeQuery(query)) {
+        try (Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(query)) {
             ResultSetMetaData rsmd = rs.getMetaData();
             int col = rsmd.getColumnCount();
             for (int i = 1; i <= col; i++) {
@@ -73,7 +70,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
                 System.out.println("\n");
                 columnName = rsmd.getColumnName(i);
                 colCls = rsmd.getColumnTypeName(i);
-                
+
                 System.out.println("Class Name of Column : " + columnName + " is : " + colCls);
 //              columnCombBx.addItem(columnName);
                 JCheckBox checkbox = new JCheckBox(columnName);
@@ -89,7 +86,6 @@ public final class selectColumnForm extends javax.swing.JFrame {
             stmt.close();
         }
     }
-
 
     public List<String> getSelectedColumns() {
         selectedColumns.clear();
@@ -190,7 +186,6 @@ public final class selectColumnForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
