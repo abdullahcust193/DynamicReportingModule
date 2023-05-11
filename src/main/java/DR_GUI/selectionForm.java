@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-<<<<<<< HEAD
+
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,8 +29,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import net.sf.jasperreports.view.JasperViewer;
 import org.w3c.dom.Document;
-=======
->>>>>>> main
+
 import org.w3c.dom.Node;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -474,7 +473,7 @@ public class selectionForm extends javax.swing.JFrame {
             }
 
             // Write the XML document to a file
-            File file = new File("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.xml");
+            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.xml");
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -492,7 +491,7 @@ public class selectionForm extends javax.swing.JFrame {
 //        try {
         generateXML(columnNames, columnClasses);
 
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
 
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
@@ -526,56 +525,10 @@ public class selectionForm extends javax.swing.JFrame {
         JasperViewer.viewReport(jasperPrint, false);
     }
 
-<<<<<<< HEAD
-    private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {                                         
-//        try {
-        // TODO add your handling code here:
-//            printReport();
-        generateXML(columnNames);
-        System.out.println("col names: " + columnNames);
-//        } catch (JRException ex) {
-//            JOptionPane.showMessageDialog(this, "Jasper error." + ex.getMessage());
-//            System.out.println("Jasper error= " + ex.getMessage());
-//        }
 
-//            JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+ 
 //
-//            String query = "SELECT ";
-//            int numColumns = mainTable.getColumnCount();
-//            for (int i = 0; i < numColumns; i++) {
-//                query += mainTable.getColumnName(i);
-//                if (i != numColumns - 1) {
-//                    query += ", ";
-//                }
-//            }
-//            query += " FROM " + tableName; // replace 'myTable' with the name of your table
-//            // Create the JRDesignQuery object and set the query text
-//            // JRDesignQuery jrQuery = new JRDesignQuery();
-//            // jrQuery.setText(query);
-//            // Set the query for the JasperDesign object
-//            // design.setQuery(jrQuery);
-//            System.out.println("Generated query = " + query);
-//            JRResultSetDataSource dataList = getData(query);
-//            // Compile the JRXML file
-//            JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
-//            // Create a HashMap to hold the report parameters
-//            HashMap<String, Object> parameters = new HashMap<>();
-//            // Get the column names from the JTable
-//            String[] columnNames = new String[mainTable.getColumnCount()];
-//            for (int i = 0; i < columnNames.length; i++) {
-//                columnNames[i] = mainTable.getColumnName(i);
-//            }
-//            // Fill the report with data
-//            JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
-//
-//            // Show the report in a viewer
-//            JasperViewer.viewReport(jasperPrint, false);
-//        } catch (TransformerException ex) {
-//            JOptionPane.showMessageDialog(this, "error in calling GenerateTemplateDynimcally: " + ex.getMessage());
-//        }
-    }
-=======
->>>>>>> main
+
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
         try {
