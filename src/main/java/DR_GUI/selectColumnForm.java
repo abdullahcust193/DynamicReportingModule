@@ -46,7 +46,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
                 String user2 = "root";
                 String password2 = "";
                 conn = DriverManager.getConnection(url2, user2, password2);
-                getColumns(tableName);
+               
 
             } catch (SQLException ex) {
                 System.out.println("\nError with Fetching Column in ComboBox: " + ex.getMessage());
@@ -56,6 +56,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
             System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
     }
+
 
     public void getColumns(String tableName) throws SQLException {
         // clear the checkboxesPanel before adding new checkboxes
@@ -88,6 +89,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
             stmt.close();
         }
     }
+
 
     public List<String> getSelectedColumns() {
         selectedColumns.clear();

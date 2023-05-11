@@ -2,24 +2,31 @@ package DR_GUI;
 
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.*;
+
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import org.w3c.dom.Element;
+
 import net.sf.jasperreports.engine.xml.JRXmlWriter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import net.sf.jasperreports.view.JasperViewer;
+import org.w3c.dom.Node;
+=======
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,6 +49,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 public class selectionForm extends javax.swing.JFrame {
 
@@ -156,29 +164,39 @@ public class selectionForm extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "SQL Error: " + ex.getMessage());
         }
-//        try (Statement stmt = conn.createStatement();
-//                ResultSet rs = stmt.executeQuery(query)) {
-//
-//            ResultSetMetaData rsmd = rs.getMetaData();
-//            int columnCount = rsmd.getColumnCount();
-//            // Get column names
-//            String[] columnNam = new String[columnCount];
-//            for (int i = 1; i <= columnCount; i++) {
-//                columnNam[i - 1] = rsmd.getColumnName(i);
-//            }
-//            // Set column names in the table model
-//            selectedColumnsTableModel.setColumnIdentifiers(columnNam);
-//            // Add rows to the table model
-//            while (rs.next()) {
-//                Object[] rowData = new Object[columnCount];
-//                for (int i = 1; i <= columnCount; i++) {
-//                    rowData[i - 1] = rs.getObject(i);
-//                }
-//                selectedColumnsTableModel.addRow(rowData);
-//            }
-//        } catch (SQLException e) {
-//            System.out.println("Error in Select Colums fUCNN: " + e.getMessage());
-//        }
+
+    }
+
+    public void generateXML(List<String> columnNames) {
+        try {
+            // Create a new XML document
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            org.w3c.dom.Document doc = docBuilder.newDocument();
+
+            // Create the root element
+            Element rootElement = (Element) doc.createElement("Fields");
+            doc.appendChild((Node) rootElement);
+
+            // Create field elements for each column name
+            for (String columnName : columnNames) {
+                Element fieldElement = (Element) doc.createElement("Field");
+                fieldElement.setAttribute("name", columnName);
+                rootElement.appendChild(fieldElement);
+            }
+
+            // Write the XML document to a file
+            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\fields.xml");
+            javax.xml.transform.TransformerFactory transformerFactory = javax.xml.transform.TransformerFactory.newInstance();
+            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            javax.xml.transform.dom.DOMSource source = new javax.xml.transform.dom.DOMSource(doc);
+            javax.xml.transform.stream.StreamResult result = new javax.xml.transform.stream.StreamResult(file);
+            transformer.transform(source, result);
+
+            System.out.println("XML file generated successfully!");
+
+        } catch (ParserConfigurationException | javax.xml.transform.TransformerException e) {
+        }
     }
 
     private void openDbForm(boolean dbSelected) {
@@ -369,6 +387,10 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
+
+    private void GenerateTemplateDynimcally() {
+
+
     public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
         try {
             // Create a new XML document
@@ -472,11 +494,59 @@ public class selectionForm extends javax.swing.JFrame {
         } catch (ParserConfigurationException | TransformerException e) {
             // Handle exceptions
         }
+
     }
 
     public void printReport() throws JRException, TransformerException {
 //        try {
             generateXML(columnNames, columnClasses);
+
+
+        GenerateTemplateDynimcally();
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\DynamicDataReport.jrxml");
+
+        String query = "SELECT ";
+        int numColumns = mainTable.getColumnCount();
+        for (int i = 0; i < numColumns; i++) {
+            query += mainTable.getColumnName(i);
+            if (i != numColumns - 1) {
+                query += ", ";
+            }
+        }
+        query += " FROM " + tableName; // replace 'myTable' with the name of your table
+        // Create the JRDesignQuery object and set the query text
+        // JRDesignQuery jrQuery = new JRDesignQuery();
+        // jrQuery.setText(query);
+        // Set the query for the JasperDesign object
+        // design.setQuery(jrQuery);
+        System.out.println("Generated query = " + query);
+        JRResultSetDataSource dataList = getData(query);
+        // Compile the JRXML file
+        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
+        // Create a HashMap to hold the report parameters
+        HashMap<String, Object> parameters = new HashMap<>();
+        // Get the column names from the JTable
+        String[] columnNames = new String[mainTable.getColumnCount()];
+        for (int i = 0; i < columnNames.length; i++) {
+            columnNames[i] = mainTable.getColumnName(i);
+        }
+        // Fill the report with data
+        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+
+        // Show the report in a viewer
+        JasperViewer.viewReport(jasperPrint, false);
+    }
+
+    private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
+//        try {
+        // TODO add your handling code here:
+//            printReport();
+        generateXML(columnNames);
+        System.out.println("col names: " + columnNames);
+//        } catch (JRException ex) {
+//            JOptionPane.showMessageDialog(this, "Jasper error." + ex.getMessage());
+//            System.out.println("Jasper error= " + ex.getMessage());
+//        }
 
 //            JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
 //
@@ -525,6 +595,7 @@ public class selectionForm extends javax.swing.JFrame {
         } catch (TransformerException ex) {
             Logger.getLogger(selectionForm.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_printBTnActionPerformed
 
     public static void main(String args[]) {

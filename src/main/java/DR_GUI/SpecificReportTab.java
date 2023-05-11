@@ -72,7 +72,7 @@ public class SpecificReportTab extends javax.swing.JFrame {
 
     try {
         JasperDesign jd;
-        jd = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\src\\main\\java\\Reports\\report3.jrxml");
+        jd = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DynamicReporting\\DynamicReportingModule\\src\\main\\java\\Reports\\report3.jrxml");
         String sql = "SELECT `id`, `name`, `age`, `registration_no` FROM `home` WHERE id='" + txt_id.getText() + "'";
         JRDesignQuery newQuery = new JRDesignQuery();
         newQuery.setText(sql);
@@ -83,7 +83,7 @@ public class SpecificReportTab extends javax.swing.JFrame {
         JRViewer viewReport = new JRViewer(jprint);
 
         // Set the preferred size of the panel
-        int panelWidth = 800; // Set the desired width
+        int panelWidth = 1100; // Set the desired width
         int panelHeight = 800; // Set the desired height
         panael.setPreferredSize(new Dimension(panelWidth, panelHeight));
 
@@ -1079,10 +1079,8 @@ public class SpecificReportTab extends javax.swing.JFrame {
         });
         table_m.setFocusable(false);
         table_m.setGridColor(new java.awt.Color(51, 102, 255));
-        table_m.setIntercellSpacing(new java.awt.Dimension(0, 0));
         table_m.setRowHeight(25);
         table_m.setSelectionBackground(new java.awt.Color(51, 153, 255));
-        table_m.setShowVerticalLines(false);
         table_m.getTableHeader().setReorderingAllowed(false);
         table_m.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1237,10 +1235,8 @@ public class SpecificReportTab extends javax.swing.JFrame {
         });
         table2.setFocusable(false);
         table2.setGridColor(new java.awt.Color(51, 102, 255));
-        table2.setIntercellSpacing(new java.awt.Dimension(0, 0));
         table2.setRowHeight(25);
         table2.setSelectionBackground(new java.awt.Color(51, 153, 255));
-        table2.setShowVerticalLines(false);
         table2.getTableHeader().setReorderingAllowed(false);
         table2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1262,7 +1258,7 @@ public class SpecificReportTab extends javax.swing.JFrame {
         );
         studentRecordTabLayout.setVerticalGroup(
             studentRecordTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 953, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 941, Short.MAX_VALUE)
         );
 
         jTabbed1.addTab("Student Records", studentRecordTab);
@@ -1515,7 +1511,7 @@ public class SpecificReportTab extends javax.swing.JFrame {
                 .addComponent(jTabbedPane6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(269, Short.MAX_VALUE))
+                .addContainerGap(266, Short.MAX_VALUE))
         );
 
         generalReportTab.addTab("", jPanel7);
@@ -1524,13 +1520,13 @@ public class SpecificReportTab extends javax.swing.JFrame {
 
         panael.setBackground(new java.awt.Color(204, 204, 204));
         panael.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panael.setPreferredSize(new java.awt.Dimension(800, 800));
+        panael.setPreferredSize(new java.awt.Dimension(1100, 800));
 
         javax.swing.GroupLayout panaelLayout = new javax.swing.GroupLayout(panael);
         panael.setLayout(panaelLayout);
         panaelLayout.setHorizontalGroup(
             panaelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 806, Short.MAX_VALUE)
+            .addGap(0, 1095, Short.MAX_VALUE)
         );
         panaelLayout.setVerticalGroup(
             panaelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1565,8 +1561,8 @@ public class SpecificReportTab extends javax.swing.JFrame {
                         .addComponent(ReportBtn))
                     .addGroup(printStudentTabLayout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(panael, javax.swing.GroupLayout.PREFERRED_SIZE, 812, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(378, Short.MAX_VALUE))
+                        .addComponent(panael, javax.swing.GroupLayout.PREFERRED_SIZE, 1101, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
         printStudentTabLayout.setVerticalGroup(
             printStudentTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
