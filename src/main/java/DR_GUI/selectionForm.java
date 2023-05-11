@@ -471,10 +471,7 @@ public class selectionForm extends javax.swing.JFrame {
             }
 
             // Write the XML document to a file
-
             File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.xml");
-
-            File file = new File("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
