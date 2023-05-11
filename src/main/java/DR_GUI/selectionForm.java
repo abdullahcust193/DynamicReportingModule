@@ -17,8 +17,6 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -437,9 +435,9 @@ public class selectionForm extends javax.swing.JFrame {
 
             // Create field elements for each column name
             for (int i = 0; i < columnNames.size(); i++) {
+
                 String columnName = columnNames.get(i);
                 String columnClass = columnClasses.get(i);
-
                 // Create field element
                 Element fieldElement = doc.createElement("field");
                 fieldElement.setAttribute("name", columnName);
@@ -473,7 +471,11 @@ public class selectionForm extends javax.swing.JFrame {
             }
 
             // Write the XML document to a file
+
             File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.xml");
+
+            File file = new File("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
+
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -524,10 +526,6 @@ public class selectionForm extends javax.swing.JFrame {
         // Show the report in a viewer
         JasperViewer.viewReport(jasperPrint, false);
     }
-
-
- 
-//
 
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed

@@ -4,7 +4,6 @@
  */
 package GUI;
 
-import DR_GUI.DBform;
 import Classes.Student;
 import Controller.StudentController;
 import DBController.DBConnect;
@@ -28,7 +27,6 @@ import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.engine.data.JRTableModelDataSource;
 import net.sf.jasperreports.engine.design.JRDesignQuery;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
@@ -1170,13 +1168,11 @@ public class MDForm extends javax.swing.JFrame {
 //        tv.setVisible(true);
 //        this.setVisible(false);
 
-//        TablesView tableview = new TablesView();
-//        tableview.setVisible(true);
-//        this.setVisible(false);
-        
-        DBform dBform = new DBform();
-        dBform.setVisible(true);
+        TablesView tableview = new TablesView();
+        tableview.setVisible(true);
         this.setVisible(false);
+        
+     
 
 
     }//GEN-LAST:event_print2ActionPerformed

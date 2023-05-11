@@ -283,252 +283,130 @@ public class DBform extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panel1 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
         dbCombBox = new javax.swing.JComboBox<>();
-        showdb1 = new javax.swing.JLabel();
         tableCombBx = new javax.swing.JComboBox<>();
-        showTables1 = new javax.swing.JLabel();
         columnCombBx = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDB = new javax.swing.JTable();
-        showDataBtn = new javax.swing.JButton();
-        printButton = new javax.swing.JButton();
         chckboxPanel = new javax.swing.JPanel();
-        selectColumnsBtn = new javax.swing.JButton();
+        showDataBtn = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         table2 = new javax.swing.JTable();
-        showTables = new javax.swing.JLabel();
+        selectColumnsBtn = new javax.swing.JButton();
+        printButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        panel1.setBackground(new java.awt.Color(253, 239, 239));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        dbCombBox.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        dbCombBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the database" }));
-        dbCombBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                dbCombBoxActionPerformed(evt);
-            }
-        });
+        dbCombBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Database" }));
 
-        showdb1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        showdb1.setText("Select Database");
+        tableCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Table", " " }));
 
-        tableCombBx.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tableCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the table" }));
-        tableCombBx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tableCombBxActionPerformed(evt);
-            }
-        });
+        columnCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Columns" }));
 
-        showTables1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        showTables1.setText("Select Tables");
-
-        columnCombBx.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        columnCombBx.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select the column" }));
-        columnCombBx.setMinimumSize(new java.awt.Dimension(157, 31));
-        columnCombBx.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                columnCombBxActionPerformed(evt);
-            }
-        });
-
-        tableDB.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         tableDB.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "", "", "", ""
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
-        tableDB.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tableDBMouseClicked(evt);
-            }
-        });
+        ));
         jScrollPane1.setViewportView(tableDB);
 
-        showDataBtn.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        showDataBtn.setText("Show Table");
-        showDataBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chckboxPanel.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout chckboxPanelLayout = new javax.swing.GroupLayout(chckboxPanel);
+        chckboxPanel.setLayout(chckboxPanelLayout);
+        chckboxPanelLayout.setHorizontalGroup(
+            chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 259, Short.MAX_VALUE)
+        );
+        chckboxPanelLayout.setVerticalGroup(
+            chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        showDataBtn.setText("Show Record");
         showDataBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 showDataBtnActionPerformed(evt);
             }
         });
 
-        printButton.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        printButton.setForeground(new java.awt.Color(255, 0, 0));
-        printButton.setText("Print Report");
-        printButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        printButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printButtonActionPerformed(evt);
+        table2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
             }
-        });
+        ));
+        jScrollPane2.setViewportView(table2);
 
-        chckboxPanel.setBackground(new java.awt.Color(255, 255, 255));
-        chckboxPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        javax.swing.GroupLayout chckboxPanelLayout = new javax.swing.GroupLayout(chckboxPanel);
-        chckboxPanel.setLayout(chckboxPanelLayout);
-        chckboxPanelLayout.setHorizontalGroup(
-            chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
-            .addGap(0, 306, Short.MAX_VALUE)
-=======
-            .addGap(0, 451, Short.MAX_VALUE)
->>>>>>> main
-        );
-        chckboxPanelLayout.setVerticalGroup(
-            chckboxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
-            .addGap(0, 207, Short.MAX_VALUE)
-=======
-            .addGap(0, 304, Short.MAX_VALUE)
->>>>>>> main
-        );
-
-        selectColumnsBtn.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
-        selectColumnsBtn.setForeground(new java.awt.Color(0, 0, 255));
-        selectColumnsBtn.setText("Show Record");
-        selectColumnsBtn.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        selectColumnsBtn.setPreferredSize(new java.awt.Dimension(87, 27));
+        selectColumnsBtn.setText("Show ");
         selectColumnsBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectColumnsBtnActionPerformed(evt);
             }
         });
 
-        table2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
-        table2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "", "", "", ""
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        printButton.setText("Print");
+        printButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButtonActionPerformed(evt);
             }
         });
-        jScrollPane2.setViewportView(table2);
 
-        showTables.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        showTables.setText("Select Columns");
-
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-<<<<<<< HEAD
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(showdb1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dbCombBox, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(114, 114, 114)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tableCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showTables1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(columnCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showTables, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 590, Short.MAX_VALUE)
-                            .addGroup(panel1Layout.createSequentialGroup()
-                                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(showDataBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(printButton, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(dbCombBox, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(tableCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(columnCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chckboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 270, Short.MAX_VALUE))
-=======
-                    .addComponent(chckboxPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(showTables, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
->>>>>>> main
+                .addContainerGap(47, Short.MAX_VALUE))
         );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panel1Layout.createSequentialGroup()
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addGap(25, 25, 25)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(showdb1)
-                            .addComponent(showTables1)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(showTables)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dbCombBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tableCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-<<<<<<< HEAD
                     .addComponent(columnCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(chckboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(chckboxPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(printButton)
-                    .addComponent(showDataBtn))
-<<<<<<< HEAD
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(showDataBtn)
+                    .addComponent(printButton))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(291, 291, 291))
-=======
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(164, Short.MAX_VALUE))
->>>>>>> main
-=======
-                    .addComponent(columnCombBx, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showTables))
-                .addGap(27, 27, 27)
-                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chckboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(panel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(printButton)
-                            .addComponent(showDataBtn))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(selectColumnsBtn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
->>>>>>> main
+                .addComponent(selectColumnsBtn)
+                .addGap(32, 32, 32))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -536,38 +414,26 @@ public class DBform extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void dbCombBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dbCombBoxActionPerformed
+    private void selectColumnsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectColumnsBtnActionPerformed
         // TODO add your handling code here:
-
-    }//GEN-LAST:event_dbCombBoxActionPerformed
-
-    private void tableCombBxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tableCombBxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tableCombBxActionPerformed
-
-    private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
-        // TODO add your handling code here:
-        showDataBtn.addActionListener((ActionEvent e) -> {
-            try {
-                String tableName = (String) tableCombBx.getSelectedItem();
-                fetchTableData(tableName);
-            } catch (SQLException ex) {
-                System.out.println("Show Data Button error: " + ex.getMessage());
-            }
+         selectColumnsBtn.addActionListener((ActionEvent e) -> {
+            String tableName = (String) tableCombBx.getSelectedItem();
+            fetchSelectedColumnsData(tableName);
         });
-    }//GEN-LAST:event_showDataBtnActionPerformed
+
+    }//GEN-LAST:event_selectColumnsBtnActionPerformed
 
     private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
         // TODO add your handling code here:
@@ -583,32 +449,17 @@ public class DBform extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_printButtonActionPerformed
 
-    private void selectColumnsBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectColumnsBtnActionPerformed
+    private void showDataBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showDataBtnActionPerformed
         // TODO add your handling code here:
-        selectColumnsBtn.addActionListener((ActionEvent e) -> {
-            String tableName = (String) tableCombBx.getSelectedItem();
-            fetchSelectedColumnsData(tableName);
+        showDataBtn.addActionListener((ActionEvent e) -> {
+            try {
+                String tableName = (String) tableCombBx.getSelectedItem();
+                fetchTableData(tableName);
+            } catch (SQLException ex) {
+                System.out.println("Show Data Button error: " + ex.getMessage());
+            }
         });
-
-
-    }//GEN-LAST:event_selectColumnsBtnActionPerformed
-
-    private void tableDBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDBMouseClicked
-        // TODO add your handling code here:
-
-        int row = tableDB.getSelectedRow();
-        if (row >= 0) {
-            tableDB.setSelectionBackground(Color.GRAY);
-            tableDB.setSelectionForeground(Color.BLACK);
-        }
-
-
-    }//GEN-LAST:event_tableDBMouseClicked
-
-
-    private void columnCombBxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_columnCombBxActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_columnCombBxActionPerformed
+    }//GEN-LAST:event_showDataBtnActionPerformed
 
     public static void main(String args[]) {
 
@@ -623,18 +474,14 @@ public class DBform extends javax.swing.JFrame {
     private javax.swing.JPanel chckboxPanel;
     private javax.swing.JComboBox<String> columnCombBx;
     private javax.swing.JComboBox<String> dbCombBox;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JPanel panel1;
     private javax.swing.JButton printButton;
     private javax.swing.JButton selectColumnsBtn;
     private javax.swing.JButton showDataBtn;
-    private javax.swing.JLabel showTables;
-    private javax.swing.JLabel showTables1;
-    private javax.swing.JLabel showdb1;
     private javax.swing.JTable table2;
     private javax.swing.JComboBox<String> tableCombBx;
     private javax.swing.JTable tableDB;
     // End of variables declaration//GEN-END:variables
-
 }
