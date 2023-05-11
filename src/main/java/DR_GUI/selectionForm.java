@@ -418,16 +418,29 @@ public class selectionForm extends javax.swing.JFrame {
             titleBandElement.setAttribute("height", "50");
             titleElement.appendChild(titleBandElement);
 
-            Element staticTextElement = doc.createElement("staticText");
-            titleBandElement.appendChild(staticTextElement);
+            Element textFieldElement = doc.createElement("textField");
+            titleBandElement.appendChild(textFieldElement);
 
             Element reportElementElement = doc.createElement("reportElement");
+            reportElementElement.setAttribute("x", "0");
+            reportElementElement.setAttribute("y", "10");
+            reportElementElement.setAttribute("width", "555");
+            reportElementElement.setAttribute("height", "30");
+            textFieldElement.appendChild(reportElementElement);
 
-            staticTextElement.appendChild(reportElementElement);
+            Element textElementElement = doc.createElement("textElement");
+            textElementElement.setAttribute("textAlignment", "Center");
+            textFieldElement.appendChild(textElementElement);
 
-            Element textElement = doc.createElement("text");
-            textElement.setTextContent("Professional Report Title");
-            staticTextElement.appendChild(textElement);
+            Element fontElement = doc.createElement("font");
+            fontElement.setAttribute("size", "18");
+            fontElement.setAttribute("isBold", "true");
+            textElementElement.appendChild(fontElement);
+
+            Element textFieldExpressionElement = doc.createElement("textFieldExpression");
+            CDATASection cdata = doc.createCDATASection("\"Dynamic Data Report\"");
+            textFieldExpressionElement.appendChild(cdata);
+            textFieldElement.appendChild(textFieldExpressionElement);
 
             // Create detail band
             Element detailElement = doc.createElement("detail");
@@ -435,45 +448,44 @@ public class selectionForm extends javax.swing.JFrame {
 
             Element detailBandElement = doc.createElement("band");
             detailBandElement.setAttribute("height", "30");
-            detailElement.appendChild(detailBandElement);
 
             // Create field elements for each column name
             for (int i = 0; i < columnNames.size(); i++) {
 
                 String columnName = columnNames.get(i);
-                String columnClass = columnClasses.get(i);
 
                 // Create textField element
-                Element textFieldElement = doc.createElement("textField");
-                Element textFieldReportElement = doc.createElement("reportElement");
-                textFieldElement.appendChild(textFieldReportElement);
-                detailBandElement.appendChild(textFieldElement);
+                Element textFieldElement2 = doc.createElement("textField");
+                detailBandElement.appendChild(textFieldElement2);
 
-                textFieldReportElement.setAttribute("x", String.valueOf(100 * i));
-                textFieldReportElement.setAttribute("y", "0");
-                textFieldReportElement.setAttribute("width", "100");
-                textFieldReportElement.setAttribute("height", "30");
+                // Create reportElement element
+                Element reportElementElement2 = doc.createElement("reportElement");
 
-                textFieldElement.appendChild(reportElementElement);
+                reportElementElement2.setAttribute("x", String.valueOf(100 * i));
+                reportElementElement2.setAttribute("y", "0");
+                reportElementElement2.setAttribute("width", "100");
+                reportElementElement2.setAttribute("height", "30");
+                textFieldElement2.appendChild(reportElementElement2);
 
                 // Create textElement element
-                Element textElementElement = doc.createElement("textElement");
-                textFieldElement.appendChild(textElementElement);
+                Element textElementElement2 = doc.createElement("textElement");
+                textFieldElement2.appendChild(textElementElement2);
 
                 // Create font element
-                Element fontElement = doc.createElement("font");
-                fontElement.setAttribute("size", "12");
-                textElementElement.appendChild(fontElement);
+                Element fontElement2 = doc.createElement("font");
+                fontElement2.setAttribute("size", "12");
+                textElementElement2.appendChild(fontElement2);
 
                 // Create textFieldExpression element
-                Element textFieldExpressionElement = doc.createElement("textFieldExpression");
-                CDATASection cdata = doc.createCDATASection("$F{" + columnName + "}");
-                textFieldExpressionElement.appendChild(cdata);
-                textFieldElement.appendChild(textFieldExpressionElement);
+                Element textFieldExpressionElement2 = doc.createElement("textFieldExpression");
+                CDATASection cdata2 = doc.createCDATASection("$F{" + columnName + "}");
+                textFieldExpressionElement2.appendChild(cdata2);
+                textFieldElement2.appendChild(textFieldExpressionElement2);
             }
-
+            
+            detailElement.appendChild(detailBandElement);
             // Write the XML document to a file
-            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.xml");
+            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
 
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -492,7 +504,7 @@ public class selectionForm extends javax.swing.JFrame {
 //        try {
         generateXML(columnNames, columnClasses);
 
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\src\\main\\java\\DR_GUI\\report1.jrxml");
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
 
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
