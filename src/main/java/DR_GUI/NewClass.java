@@ -9,5 +9,5 @@ package DR_GUI;
  * @author chabd
  */
 public class NewClass {
-    
+    int a;
 }
