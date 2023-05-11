@@ -13,4 +13,5 @@ public class NewClass {
     int b;
     int c;
     int k;
+    int d;
 }
