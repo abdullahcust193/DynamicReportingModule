@@ -4,6 +4,8 @@ import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +14,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -380,175 +383,248 @@ public class selectionForm extends javax.swing.JFrame {
         return resultSetDataSource;
     }
 
+    private String convertColumnName(String columnName) {
+        // Convert "lastname" to "Last Name"
+        String[] words = columnName.split("(?=[A-Z])");
+        StringBuilder convertedName = new StringBuilder();
+        for (String word : words) {
+            convertedName.append(word.substring(0, 1).toUpperCase()).append(word.substring(1)).append(" ");
+        }
+        return convertedName.toString().trim();
+    }
+
+    private Element createRootElement(Document doc) {
+        Element rootElement = doc.createElementNS("http://jasperreports.sourceforge.net/jasperreports", "jasperReport");
+        rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
+        rootElement.setAttribute("xsi:schemaLocation", "http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd");
+        rootElement.setAttribute("name", "DynamicDataReport");
+        rootElement.setAttribute("pageWidth", "595");
+        rootElement.setAttribute("pageHeight", "842");
+        rootElement.setAttribute("columnWidth", "555");
+        rootElement.setAttribute("leftMargin", "20");
+        rootElement.setAttribute("rightMargin", "20");
+        rootElement.setAttribute("topMargin", "20");
+        rootElement.setAttribute("bottomMargin", "20");
+        doc.appendChild(rootElement);
+
+        return rootElement;
+    }
+
+    private void addFields(Document doc, Element rootElement, List<String> columnNames, List<String> columnClasses) {
+        for (int i = 0; i < columnNames.size(); i++) {
+            String columnName = columnNames.get(i);
+            String columnClass = columnClasses.get(i);
+
+            Element fieldElement = doc.createElement("field");
+            fieldElement.setAttribute("name", columnName);
+            fieldElement.setAttribute("class", columnClass);
+            rootElement.appendChild(fieldElement);
+        }
+    }
+
+    private void addTitleBand(Document doc, Element rootElement) {
+        Element titleElement = doc.createElement("title");
+        rootElement.appendChild(titleElement);
+        Element titleBandElement = doc.createElement("band");
+        titleBandElement.setAttribute("height", "50");
+        titleElement.appendChild(titleBandElement);
+
+        Element textFieldElement = doc.createElement("textField");
+        titleBandElement.appendChild(textFieldElement);
+
+        Element reportElementElement = doc.createElement("reportElement");
+        reportElementElement.setAttribute("x", "0");
+        reportElementElement.setAttribute("y", "10");
+        reportElementElement.setAttribute("width", "555");
+        reportElementElement.setAttribute("height", "30");
+        textFieldElement.appendChild(reportElementElement);
+
+        Element textElementElement = doc.createElement("textElement");
+        textElementElement.setAttribute("textAlignment", "Center");
+        textFieldElement.appendChild(textElementElement);
+
+        Element fontElement = doc.createElement("font");
+        fontElement.setAttribute("size", "18");
+        fontElement.setAttribute("isBold", "true");
+        textElementElement.appendChild(fontElement);
+
+        Element textFieldExpressionElement = doc.createElement("textFieldExpression");
+        CDATASection cdata = doc.createCDATASection("\"Dynamic Data Report\"");
+        textFieldExpressionElement.appendChild(cdata);
+        textFieldElement.appendChild(textFieldExpressionElement);
+    }
+
+    private void addDetailBand(Document doc, Element rootElement, List<String> columnNames) {
+        Element detailElement = doc.createElement("detail");
+        rootElement.appendChild(detailElement);
+        Element detailBandElement = doc.createElement("band");
+        detailBandElement.setAttribute("height", "30");
+        detailElement.appendChild(detailBandElement);
+
+        for (int i = 0; i < columnNames.size(); i++) {
+            String columnName = columnNames.get(i);
+
+            Element textFieldElement2 = doc.createElement("textField");
+            detailBandElement.appendChild(textFieldElement2);
+
+            Element reportElementElement2 = doc.createElement("reportElement");
+            reportElementElement2.setAttribute("x", String.valueOf(100 * i));
+            reportElementElement2.setAttribute("y", "0");
+            reportElementElement2.setAttribute("width", "100");
+            reportElementElement2.setAttribute("height", "30");
+            textFieldElement2.appendChild(reportElementElement2);
+
+            Element textElementElement2 = doc.createElement("textElement");
+            textFieldElement2.appendChild(textElementElement2);
+
+            Element fontElement2 = doc.createElement("font");
+            fontElement2.setAttribute("size", "12");
+            textElementElement2.appendChild(fontElement2);
+
+            Element textFieldExpressionElement2 = doc.createElement("textFieldExpression");
+            CDATASection cdata2 = doc.createCDATASection("$F{" + columnName + "}");
+            textFieldExpressionElement2.appendChild(cdata2);
+            textFieldElement2.appendChild(textFieldExpressionElement2);
+        }
+    }
+
+    private void writeXMLToFile(Document doc, String filePath) throws TransformerException {
+        File file = new File(filePath);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        try ( FileOutputStream outputStream = new FileOutputStream(file)) {
+            StreamResult result = new StreamResult(outputStream);
+            transformer.transform(source, result);
+        } catch (IOException e) {
+            // Handle file write error or log the error
+            JOptionPane.showMessageDialog(this, "File Error writeXMLToFile(): " + e.getMessage());
+        }
+    }
+
     public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
+
         try {
-            // Create a new XML document
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
 
-            // Create the root element with XML declaration
-            Element rootElement = doc.createElementNS("http://jasperreports.sourceforge.net/jasperreports", "jasperReport");
-            rootElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-            rootElement.setAttribute("xsi:schemaLocation", "http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd");
-            rootElement.setAttribute("name", "DynamicDataReport");
-            rootElement.setAttribute("pageWidth", "595");
-            rootElement.setAttribute("pageHeight", "842");
-            rootElement.setAttribute("columnWidth", "555");
-            rootElement.setAttribute("leftMargin", "20");
-            rootElement.setAttribute("rightMargin", "20");
-            rootElement.setAttribute("topMargin", "20");
-            rootElement.setAttribute("bottomMargin", "20");
-            doc.appendChild(rootElement);
+            Element rootElement = createRootElement(doc);
+            addFields(doc, rootElement, columnNames, columnClasses);
+            addTitleBand(doc, rootElement);
+            addDetailBand(doc, rootElement, columnNames);
 
-            for (int i = 0; i < columnNames.size(); i++) {
-                String columnName = columnNames.get(i);
-                String columnClass = columnClasses.get(i);
-                // Create field element
-                Element fieldElement = doc.createElement("field");
-                fieldElement.setAttribute("name", columnName);
-                fieldElement.setAttribute("class", columnClass);
-                rootElement.appendChild(fieldElement);
-            }
-            // Create title band
-            Element titleElement = doc.createElement("title");
-            rootElement.appendChild(titleElement);
-
-            Element titleBandElement = doc.createElement("band");
-            titleBandElement.setAttribute("height", "50");
-            titleElement.appendChild(titleBandElement);
-
-            Element textFieldElement = doc.createElement("textField");
-            titleBandElement.appendChild(textFieldElement);
-
-            Element reportElementElement = doc.createElement("reportElement");
-            reportElementElement.setAttribute("x", "0");
-            reportElementElement.setAttribute("y", "10");
-            reportElementElement.setAttribute("width", "555");
-            reportElementElement.setAttribute("height", "30");
-            textFieldElement.appendChild(reportElementElement);
-
-            Element textElementElement = doc.createElement("textElement");
-            textElementElement.setAttribute("textAlignment", "Center");
-            textFieldElement.appendChild(textElementElement);
-
-            Element fontElement = doc.createElement("font");
-            fontElement.setAttribute("size", "18");
-            fontElement.setAttribute("isBold", "true");
-            textElementElement.appendChild(fontElement);
-
-            Element textFieldExpressionElement = doc.createElement("textFieldExpression");
-            CDATASection cdata = doc.createCDATASection("\"Dynamic Data Report\"");
-            textFieldExpressionElement.appendChild(cdata);
-            textFieldElement.appendChild(textFieldExpressionElement);
-
-            // Create detail band
-            Element detailElement = doc.createElement("detail");
-            rootElement.appendChild(detailElement);
-
-            Element detailBandElement = doc.createElement("band");
-            detailBandElement.setAttribute("height", "30");
-
-            // Create field elements for each column name
-            for (int i = 0; i < columnNames.size(); i++) {
-
-                String columnName = columnNames.get(i);
-
-                // Create textField element
-                Element textFieldElement2 = doc.createElement("textField");
-                detailBandElement.appendChild(textFieldElement2);
-
-                // Create reportElement element
-                Element reportElementElement2 = doc.createElement("reportElement");
-
-                reportElementElement2.setAttribute("x", String.valueOf(100 * i));
-                reportElementElement2.setAttribute("y", "0");
-                reportElementElement2.setAttribute("width", "100");
-                reportElementElement2.setAttribute("height", "30");
-                textFieldElement2.appendChild(reportElementElement2);
-
-                // Create textElement element
-                Element textElementElement2 = doc.createElement("textElement");
-                textFieldElement2.appendChild(textElementElement2);
-
-                // Create font element
-                Element fontElement2 = doc.createElement("font");
-                fontElement2.setAttribute("size", "12");
-                textElementElement2.appendChild(fontElement2);
-
-                // Create textFieldExpression element
-                Element textFieldExpressionElement2 = doc.createElement("textFieldExpression");
-                CDATASection cdata2 = doc.createCDATASection("$F{" + columnName + "}");
-                textFieldExpressionElement2.appendChild(cdata2);
-                textFieldElement2.appendChild(textFieldExpressionElement2);
-            }
-            
-            detailElement.appendChild(detailBandElement);
-            // Write the XML document to a file
-            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
-
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(file);
-            transformer.transform(source, result);
+            writeXMLToFile(doc, "C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
 
             System.out.println("XML file generated successfully!");
         } catch (ParserConfigurationException | TransformerException e) {
-            // Handle exceptions
+            // Handle exceptions or log the error
+            JOptionPane.showMessageDialog(this, "Error in generateXML() Function: " + e.getMessage());
         }
 
     }
 
-    public void printReport() throws JRException, TransformerException {
-//        try {
-        generateXML(columnNames, columnClasses);
-
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
-
-        String query = "SELECT ";
+//    public void printReport() throws JRException, TransformerException {
+//
+//        generateXML(columnNames, columnClasses);
+//
+//        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
+//
+//        String query = "SELECT ";
+//        int numColumns = mainTable.getColumnCount();
+//        for (int i = 0; i < numColumns; i++) {
+//            query += mainTable.getColumnName(i);
+//            if (i != numColumns - 1) {
+//                query += ", ";
+//            }
+//        }
+//        query += " FROM " + tableName; // replace 'myTable' with the name of your table
+//        // Create the JRDesignQuery object and set the query text
+//        // JRDesignQuery jrQuery = new JRDesignQuery();
+//        // jrQuery.setText(query);
+//        // Set the query for the JasperDesign object
+//        // design.setQuery(jrQuery);
+//        System.out.println("Generated query = " + query);
+//        JRResultSetDataSource dataList = getData(query);
+//        // Compile the JRXML file
+//        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
+//        // Create a HashMap to hold the report parameters
+//        HashMap<String, Object> parameters = new HashMap<>();
+//        // Get the column names from the JTable
+//        String[] columnNames = new String[mainTable.getColumnCount()];
+//        for (int i = 0; i < columnNames.length; i++) {
+//            columnNames[i] = mainTable.getColumnName(i);
+//        }
+//        // Fill the report with data
+//        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+//
+//        // Show the report in a viewer
+//        JasperViewer.viewReport(jasperPrint, false);
+//    }
+    private String buildQuery() {
+        StringBuilder queryBuilder = new StringBuilder("SELECT ");
         int numColumns = mainTable.getColumnCount();
         for (int i = 0; i < numColumns; i++) {
-            query += mainTable.getColumnName(i);
+            queryBuilder.append(mainTable.getColumnName(i));
             if (i != numColumns - 1) {
-                query += ", ";
+                queryBuilder.append(", ");
             }
         }
-        query += " FROM " + tableName; // replace 'myTable' with the name of your table
-        // Create the JRDesignQuery object and set the query text
-        // JRDesignQuery jrQuery = new JRDesignQuery();
-        // jrQuery.setText(query);
-        // Set the query for the JasperDesign object
-        // design.setQuery(jrQuery);
+        queryBuilder.append(" FROM ").append(tableName);
+        String query = queryBuilder.toString();
         System.out.println("Generated query = " + query);
-        JRResultSetDataSource dataList = getData(query);
-        // Compile the JRXML file
-        JasperReport report = net.sf.jasperreports.engine.JasperCompileManager.compileReport(design);
-        // Create a HashMap to hold the report parameters
-        HashMap<String, Object> parameters = new HashMap<>();
-        // Get the column names from the JTable
-        String[] columnNames = new String[mainTable.getColumnCount()];
-        for (int i = 0; i < columnNames.length; i++) {
-            columnNames[i] = mainTable.getColumnName(i);
-        }
-        // Fill the report with data
-        JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
+        return query;
+    }
 
-        // Show the report in a viewer
+    private JasperDesign loadJasperDesign() throws JRException {
+        return JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
+    }
+
+    private JasperReport compileReport(JasperDesign design) throws JRException {
+        return JasperCompileManager.compileReport(design);
+    }
+
+    private HashMap<String, Object> createParameters() {
+        // Implement the logic to create and populate the report parameters
+        // Example:
+        // HashMap<String, Object> parameters = new HashMap<>();
+        // parameters.put("param1", value1);
+        // parameters.put("param2", value2);
+        // ...
+        // return parameters;
+        return null;
+
+    }
+
+    private JasperPrint fillReport(JasperReport report, Map<String, Object> parameters, JRDataSource dataSource) throws JRException {
+        return JasperFillManager.fillReport(report, parameters, dataSource);
+    }
+
+    private void displayReport(JasperPrint jasperPrint) {
+        // Implement the logic to display the report
         JasperViewer.viewReport(jasperPrint, false);
     }
 
+    public void printReport() {
+        try {
+            String query = buildQuery();
+            generateXML(columnNames, columnClasses);
+            JasperDesign design = loadJasperDesign();
+            JRResultSetDataSource dataSource = getData(query);
+            JasperReport report = compileReport(design);
+            HashMap<String, Object> parameters = createParameters();
+            JasperPrint jasperPrint = fillReport(report, parameters, dataSource);
+            displayReport(jasperPrint);
+        } catch (JRException | TransformerException e) {
+            // Handle exceptions gracefully or log them for troubleshooting
+            JOptionPane.showMessageDialog(this, "Jasper Error: printReport() Function: " + e.getMessage());
+        }
+    }
 
     private void printBTnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printBTnActionPerformed
-        try {
-            // TODO add your handling code here:
-            printReport();
-        } catch (JRException ex) {
-            JOptionPane.showMessageDialog(this, "Jasper error." + ex.getMessage());
-            System.out.println("Jasper error= " + ex.getMessage());
-        } catch (TransformerException ex) {
-            Logger.getLogger(selectionForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        // TODO add your handling code here:
+        printReport();
 
     }//GEN-LAST:event_printBTnActionPerformed
 
