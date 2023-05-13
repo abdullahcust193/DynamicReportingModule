@@ -482,11 +482,11 @@ public class selectionForm extends javax.swing.JFrame {
                 textFieldExpressionElement2.appendChild(cdata2);
                 textFieldElement2.appendChild(textFieldExpressionElement2);
             }
-            
-            detailElement.appendChild(detailBandElement);
-            // Write the XML document to a file
-            File file = new File("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
 
+            detailElement.appendChild(detailBandElement);
+
+            // Write the XML document to a file
+            File file = new File("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
@@ -501,11 +501,9 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     public void printReport() throws JRException, TransformerException {
-//        try {
+
         generateXML(columnNames, columnClasses);
-
-        JasperDesign design = JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
-
+        JasperDesign design = JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
         String query = "SELECT ";
         int numColumns = mainTable.getColumnCount();
         for (int i = 0; i < numColumns; i++) {
@@ -514,12 +512,8 @@ public class selectionForm extends javax.swing.JFrame {
                 query += ", ";
             }
         }
-        query += " FROM " + tableName; // replace 'myTable' with the name of your table
-        // Create the JRDesignQuery object and set the query text
-        // JRDesignQuery jrQuery = new JRDesignQuery();
-        // jrQuery.setText(query);
-        // Set the query for the JasperDesign object
-        // design.setQuery(jrQuery);
+        query += " FROM " + tableName;
+
         System.out.println("Generated query = " + query);
         JRResultSetDataSource dataList = getData(query);
         // Compile the JRXML file
@@ -533,7 +527,6 @@ public class selectionForm extends javax.swing.JFrame {
         }
         // Fill the report with data
         JasperPrint jasperPrint = JasperFillManager.fillReport(report, parameters, dataList);
-
         // Show the report in a viewer
         JasperViewer.viewReport(jasperPrint, false);
     }
