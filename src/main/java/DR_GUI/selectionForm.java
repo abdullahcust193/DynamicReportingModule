@@ -484,7 +484,7 @@ public class selectionForm extends javax.swing.JFrame {
             addDetailBand(doc, rootElement, columnNames);
 
             // Write the XML document to a file
-            writeXMLToFile(doc, "C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
+            writeXMLToFile(doc, "C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
 
             System.out.println("XML file generated successfully!");
         } catch (ParserConfigurationException | TransformerException e) {
@@ -512,7 +512,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private JasperDesign loadJasperDesign() throws JRException {
-        return JRXmlLoader.load("C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
+        return JRXmlLoader.load("C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
     }
 
     private JasperReport compileReport(JasperDesign design) throws JRException {
