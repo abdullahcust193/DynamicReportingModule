@@ -379,6 +379,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void addFields(Document doc, Element rootElement, List<String> columnNames, List<String> columnClasses) {
+
         for (int i = 0; i < columnNames.size(); i++) {
             String columnName = columnNames.get(i);
             String columnClass = columnClasses.get(i);
@@ -387,12 +388,53 @@ public class selectionForm extends javax.swing.JFrame {
             fieldElement.setAttribute("name", columnName);
             fieldElement.setAttribute("class", columnClass);
             rootElement.appendChild(fieldElement);
+
         }
+    }
+
+    private void addColumnHeader(Document doc, Element rootElement, List<String> columnNames) {
+
+        Element columnHeaderElement = doc.createElement("columnHeader");
+        rootElement.appendChild(columnHeaderElement);
+
+        Element titleBandElement = doc.createElement("band");
+        titleBandElement.setAttribute("height", "43");
+        titleBandElement.setAttribute("splitType", "Stretch");
+        columnHeaderElement.appendChild(titleBandElement);
+        
+        for (int i = 0; i < columnNames.size(); i++) {
+            String columnName = columnNames.get(i);
+            Element staticTextElement = doc.createElement("staticText");
+            titleBandElement.appendChild(staticTextElement);
+
+            Element reportElementElement = doc.createElement("reportElement");
+            reportElementElement.setAttribute("x", "11");
+            reportElementElement.setAttribute("y", "21");
+            reportElementElement.setAttribute("width", "100");
+            reportElementElement.setAttribute("height", "20");
+            staticTextElement.appendChild(reportElementElement);
+
+            Element textElementElement = doc.createElement("textElement");
+            staticTextElement.appendChild(textElementElement);
+
+            Element fontElement = doc.createElement("font");
+            fontElement.setAttribute("size", "20");
+            fontElement.setAttribute("isBold", "true");
+            textElementElement.appendChild(fontElement);
+
+            // Create the new text tag element
+            Element textElement = doc.createElement("text");
+            CDATASection cdataSection = doc.createCDATASection(columnName);
+            textElement.appendChild(cdataSection);
+            staticTextElement.appendChild(textElement);
+        }
+
     }
 
     private void addTitleBand(Document doc, Element rootElement) {
         Element titleElement = doc.createElement("title");
         rootElement.appendChild(titleElement);
+
         Element titleBandElement = doc.createElement("band");
         titleBandElement.setAttribute("height", "50");
         titleElement.appendChild(titleBandElement);
@@ -423,6 +465,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void addDetailBand(Document doc, Element rootElement, List<String> columnNames) {
+
         Element detailElement = doc.createElement("detail");
         rootElement.appendChild(detailElement);
         Element detailBandElement = doc.createElement("band");
@@ -471,29 +514,6 @@ public class selectionForm extends javax.swing.JFrame {
         }
     }
 
-    public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
-
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
-
-            Element rootElement = createRootElement(doc);
-            addFields(doc, rootElement, columnNames, columnClasses);
-            addTitleBand(doc, rootElement);
-            addDetailBand(doc, rootElement, columnNames);
-
-            // Write the XML document to a file
-            writeXMLToFile(doc, "C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml");
-
-            System.out.println("XML file generated successfully!");
-        } catch (ParserConfigurationException | TransformerException e) {
-            // Handle exceptions or log the error
-            JOptionPane.showMessageDialog(this, "Error in generateXML() Function: " + e.getMessage());
-        }
-
-    }
-
     private String buildQuery() {
         StringBuilder queryBuilder = new StringBuilder("SELECT ");
 
@@ -537,8 +557,33 @@ public class selectionForm extends javax.swing.JFrame {
 
     private void displayReport(JasperPrint jasperPrint) {
         // Implement the logic to display the report
-
         JasperViewer.viewReport(jasperPrint, false);
+    }
+
+    public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
+        String reportFileName = "C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml";
+        try {
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
+
+            Element rootElement = createRootElement(doc);
+            addFields(doc, rootElement, columnNames, columnClasses);
+
+            addTitleBand(doc, rootElement);
+            //COLUMN Header
+            addColumnHeader(doc, rootElement, columnNames);
+            addDetailBand(doc, rootElement, columnNames);
+
+            // Write the XML document to a file
+            writeXMLToFile(doc, reportFileName);
+
+            System.out.println("XML file generated successfully!");
+        } catch (ParserConfigurationException | TransformerException e) {
+            // Handle exceptions or log the error
+            JOptionPane.showMessageDialog(this, "Error in generateXML() Function: " + e.getMessage());
+        }
+
     }
 
     public void printReport() {
