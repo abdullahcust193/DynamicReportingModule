@@ -418,7 +418,7 @@ public class selectionForm extends javax.swing.JFrame {
             staticTextElement.appendChild(textElementElement);
 
             Element fontElement = doc.createElement("font");
-            fontElement.setAttribute("size", "20");
+            fontElement.setAttribute("size", "16");
             fontElement.setAttribute("isBold", "true");
             textElementElement.appendChild(fontElement);
 
