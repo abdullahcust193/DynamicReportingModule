@@ -401,17 +401,17 @@ public class selectionForm extends javax.swing.JFrame {
         titleBandElement.setAttribute("height", "43");
         titleBandElement.setAttribute("splitType", "Stretch");
         columnHeaderElement.appendChild(titleBandElement);
-        
+
         for (int i = 0; i < columnNames.size(); i++) {
             String columnName = columnNames.get(i);
             Element staticTextElement = doc.createElement("staticText");
             titleBandElement.appendChild(staticTextElement);
 
             Element reportElementElement = doc.createElement("reportElement");
-            reportElementElement.setAttribute("x", "11");
-            reportElementElement.setAttribute("y", "21");
+            reportElementElement.setAttribute("x", String.valueOf(100 * i));
+            reportElementElement.setAttribute("y", "0");
             reportElementElement.setAttribute("width", "100");
-            reportElementElement.setAttribute("height", "20");
+            reportElementElement.setAttribute("height", "30");
             staticTextElement.appendChild(reportElementElement);
 
             Element textElementElement = doc.createElement("textElement");
@@ -566,15 +566,16 @@ public class selectionForm extends javax.swing.JFrame {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
-
+            //Root Element
             Element rootElement = createRootElement(doc);
+            //Fields Tag
             addFields(doc, rootElement, columnNames, columnClasses);
-
+            //Title Tag
             addTitleBand(doc, rootElement);
-            //COLUMN Header
+            //Column Header Tag
             addColumnHeader(doc, rootElement, columnNames);
+            //Detail Tag
             addDetailBand(doc, rootElement, columnNames);
-
             // Write the XML document to a file
             writeXMLToFile(doc, reportFileName);
 
