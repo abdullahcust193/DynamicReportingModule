@@ -505,7 +505,7 @@ public class selectionForm extends javax.swing.JFrame {
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
+        try ( FileOutputStream outputStream = new FileOutputStream(file)) {
             StreamResult result = new StreamResult(outputStream);
             transformer.transform(source, result);
         } catch (IOException e) {
@@ -513,31 +513,6 @@ public class selectionForm extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "File Error writeXMLToFile(): " + e.getMessage());
         }
     }
-
-
-    public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
-
-        try {
-            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-            Document doc = docBuilder.newDocument();
-
-            Element rootElement = createRootElement(doc);
-            addFields(doc, rootElement, columnNames, columnClasses);
-            addTitleBand(doc, rootElement);
-            addDetailBand(doc, rootElement, columnNames);
-
-            // Write the XML document to a file
-            writeXMLToFile(doc, "C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml");
-
-            System.out.println("XML file generated successfully!");
-        } catch (ParserConfigurationException | TransformerException e) {
-            // Handle exceptions or log the error
-            JOptionPane.showMessageDialog(this, "Error in generateXML() Function: " + e.getMessage());
-        }
-
-    }
-
 
     private String buildQuery() {
         StringBuilder queryBuilder = new StringBuilder("SELECT ");
@@ -586,7 +561,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     public void generateXML(List<String> columnNames, List<String> columnClasses) throws TransformerException {
-        String reportFileName = "C:\\Users\\chabd\\OneDrive\\Documents\\GitHub\\DynamicReportingModule\\fields.jrxml";
+        String reportFileName = "C:\\Users\\hp\\Documents\\GitHub\\DR\\DynamicReportingModule\\fields.jrxml";
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
