@@ -401,9 +401,11 @@ public class selectionForm extends javax.swing.JFrame {
         titleBandElement.setAttribute("height", "43");
         titleBandElement.setAttribute("splitType", "Stretch");
         columnHeaderElement.appendChild(titleBandElement);
-
+        String convertedColumnName = "";
         for (int i = 0; i < columnNames.size(); i++) {
             String columnName = columnNames.get(i);
+            convertedColumnName = convertColumnName(columnName); // Convert the column name
+            System.out.println("Column Name Formated: " + convertedColumnName);
             Element staticTextElement = doc.createElement("staticText");
             titleBandElement.appendChild(staticTextElement);
 
@@ -418,13 +420,17 @@ public class selectionForm extends javax.swing.JFrame {
             staticTextElement.appendChild(textElementElement);
 
             Element fontElement = doc.createElement("font");
+
             fontElement.setAttribute("size", "16");
+
+            fontElement.setAttribute("size", "14");
+
             fontElement.setAttribute("isBold", "true");
             textElementElement.appendChild(fontElement);
 
             // Create the new text tag element
             Element textElement = doc.createElement("text");
-            CDATASection cdataSection = doc.createCDATASection(columnName);
+            CDATASection cdataSection = doc.createCDATASection(convertedColumnName);
             textElement.appendChild(cdataSection);
             staticTextElement.appendChild(textElement);
         }
