@@ -393,7 +393,6 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void addColumnHeader(Document doc, Element rootElement, List<String> columnNames) {
-
         Element columnHeaderElement = doc.createElement("columnHeader");
         rootElement.appendChild(columnHeaderElement);
 
@@ -401,75 +400,44 @@ public class selectionForm extends javax.swing.JFrame {
         titleBandElement.setAttribute("height", "43");
         titleBandElement.setAttribute("splitType", "Stretch");
         columnHeaderElement.appendChild(titleBandElement);
- int columnWidth = 100; // Width of each column
-    int spacing = 10; // Spacing between columns
 
-    String convertedColumnName = "";
-    int x = 0;
-    for (int i = 0; i < columnNames.size(); i++) {
-        String columnName = columnNames.get(i);
-        convertedColumnName = convertColumnName(columnName); // Convert the column name
-        System.out.println("Column Name Formatted: " + convertedColumnName);
-        Element staticTextElement = doc.createElement("staticText");
+        int availableWidth = 600; // Total available width of the page
+        int spacing = 3; // Spacing between columns
 
-        titleBandElement.appendChild(staticTextElement);
+        int totalColumns = columnNames.size();
+        int columnWidth = (availableWidth - (totalColumns - 1) * spacing) / totalColumns;
 
-        Element reportElementElement = doc.createElement("reportElement");
-        reportElementElement.setAttribute("x", String.valueOf(x));
-        reportElementElement.setAttribute("y", "0");
-        reportElementElement.setAttribute("width", String.valueOf(columnWidth));
-        reportElementElement.setAttribute("height", "30");
-        staticTextElement.appendChild(reportElementElement);
+        String convertedColumnName = "";
+        int x = 0;
+        for (int i = 0; i < totalColumns; i++) {
+            String columnName = columnNames.get(i);
+            convertedColumnName = convertColumnName(columnName); // Convert the column name
+            System.out.println("Column Name Formatted: " + convertedColumnName);
+            Element staticTextElement = doc.createElement("staticText");
+            titleBandElement.appendChild(staticTextElement);
 
-        Element textElementElement = doc.createElement("textElement");
+            Element reportElementElement = doc.createElement("reportElement");
+            reportElementElement.setAttribute("x", String.valueOf(x));
+            reportElementElement.setAttribute("y", "0");
+            reportElementElement.setAttribute("width", String.valueOf(columnWidth));
+            reportElementElement.setAttribute("height", "30");
+            staticTextElement.appendChild(reportElementElement);
 
-        staticTextElement.appendChild(textElementElement);
+            Element textElementElement = doc.createElement("textElement");
+            staticTextElement.appendChild(textElementElement);
 
-        Element fontElement = doc.createElement("font");
-        fontElement.setAttribute("size", "12");
-        fontElement.setAttribute("isBold", "true");
-        textElementElement.appendChild(fontElement);
+            Element fontElement = doc.createElement("font");
+            fontElement.setAttribute("size", "12");
+            fontElement.setAttribute("isBold", "true");
+            textElementElement.appendChild(fontElement);
 
-        Element textElement = doc.createElement("text");
-        CDATASection cdataSection = doc.createCDATASection(convertedColumnName);
-        textElement.appendChild(cdataSection);
-        staticTextElement.appendChild(textElement);
+            Element textElement = doc.createElement("text");
+            CDATASection cdataSection = doc.createCDATASection(convertedColumnName);
+            textElement.appendChild(cdataSection);
+            staticTextElement.appendChild(textElement);
 
-        x += columnWidth + spacing;
-    }
-//        String convertedColumnName = "";
-//        for (int i = 0; i < columnNames.size(); i++) {
-//            String columnName = columnNames.get(i);
-//            convertedColumnName = convertColumnName(columnName); // Convert the column name
-//            System.out.println("Column Name Formated: " + convertedColumnName);
-//            Element staticTextElement = doc.createElement("staticText");
-//
-//            titleBandElement.appendChild(staticTextElement);
-//
-//            Element reportElementElement = doc.createElement("reportElement");
-//            reportElementElement.setAttribute("x", String.valueOf(100 * i));
-//            reportElementElement.setAttribute("y", "0");
-//            reportElementElement.setAttribute("width", "100");
-//            reportElementElement.setAttribute("height", "30");
-//            staticTextElement.appendChild(reportElementElement);
-//
-//            Element textElementElement = doc.createElement("textElement");
-//
-//            staticTextElement.appendChild(textElementElement);
-//
-//            Element fontElement = doc.createElement("font");
-//            fontElement.setAttribute("size", "12");
-//            fontElement.setAttribute("isBold", "true");
-//            textElementElement.appendChild(fontElement);
-//
-//            // Create the new text tag element
-//            Element textElement = doc.createElement("text");
-//
-//            CDATASection cdataSection = doc.createCDATASection(convertedColumnName);
-//            textElement.appendChild(cdataSection);
-//            staticTextElement.appendChild(textElement);
-//        }
-
+            x += columnWidth + spacing;
+        }
     }
 
     private void addTitleBand(Document doc, Element rootElement) {
@@ -512,9 +480,9 @@ public class selectionForm extends javax.swing.JFrame {
         Element detailBandElement = doc.createElement("band");
         detailBandElement.setAttribute("height", "30");
         detailElement.appendChild(detailBandElement);
-        
+
         int columnWidth = 100; // Width of each column
-        int spacing = 10; // Spacing between columns
+        int spacing = 15; // Spacing between columns
         int maxContentWidth = 50; // Maximum content width before minimizing
 
         int x = 0;
@@ -556,33 +524,6 @@ public class selectionForm extends javax.swing.JFrame {
 
             x += actualColumnWidth + spacing;
         }
-//        for (int i = 0; i < columnNames.size(); i++) {
-//            String columnName = columnNames.get(i);
-//
-//            Element textFieldElement2 = doc.createElement("textField");
-////            textFieldElement2.setAttribute("isStretchWithOverflow","true");
-//            textFieldElement2.setAttribute("textAdjust", "StretchHeight");
-//            detailBandElement.appendChild(textFieldElement2);
-//
-//            Element reportElementElement2 = doc.createElement("reportElement");
-//            reportElementElement2.setAttribute("x", String.valueOf(100 * i));
-//            reportElementElement2.setAttribute("y", "0");
-//            reportElementElement2.setAttribute("width", "100");
-//            reportElementElement2.setAttribute("height", "30");
-//            textFieldElement2.appendChild(reportElementElement2);
-//
-//            Element textElementElement2 = doc.createElement("textElement");
-//            textFieldElement2.appendChild(textElementElement2);
-//
-//            Element fontElement2 = doc.createElement("font");
-//            fontElement2.setAttribute("size", "12");
-//            textElementElement2.appendChild(fontElement2);
-//
-//            Element textFieldExpressionElement2 = doc.createElement("textFieldExpression");
-//            CDATASection cdata2 = doc.createCDATASection("$F{" + columnName + "}");
-//            textFieldExpressionElement2.appendChild(cdata2);
-//            textFieldElement2.appendChild(textFieldExpressionElement2);
-//        }
 
     }
 
