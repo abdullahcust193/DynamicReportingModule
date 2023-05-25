@@ -401,7 +401,7 @@ public class selectionForm extends javax.swing.JFrame {
         titleBandElement.setAttribute("splitType", "Stretch");
         columnHeaderElement.appendChild(titleBandElement);
 
-        int availableWidth = 600; // Total available width of the page
+        int availableWidth = 500; // Total available width of the page
         int spacing = 3; // Spacing between columns
 
         int totalColumns = columnNames.size();
@@ -428,12 +428,7 @@ public class selectionForm extends javax.swing.JFrame {
 
             Element fontElement = doc.createElement("font");
 
-
-            fontElement.setAttribute("size", "16");
-
             fontElement.setAttribute("size", "14");
-
-            fontElement.setAttribute("size", "12");
 
             fontElement.setAttribute("isBold", "true");
             textElementElement.appendChild(fontElement);
@@ -489,7 +484,7 @@ public class selectionForm extends javax.swing.JFrame {
         detailElement.appendChild(detailBandElement);
 
         int columnWidth = 100; // Width of each column
-        int spacing = 15; // Spacing between columns
+        int spacing = 10; // Spacing between columns
         int maxContentWidth = 50; // Maximum content width before minimizing
 
         int x = 0;
