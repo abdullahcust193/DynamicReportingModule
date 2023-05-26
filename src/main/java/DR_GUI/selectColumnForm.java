@@ -1,6 +1,7 @@
 package DR_GUI;
 
 import java.awt.Component;
+import java.awt.GridLayout;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,6 +13,7 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 
 public final class selectColumnForm extends javax.swing.JFrame {
 
@@ -36,6 +38,8 @@ public final class selectColumnForm extends javax.swing.JFrame {
 
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
         checkBoxPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jScrollPane1.setViewportView(checkBoxPanel);
+        
         try {
             conn = DriverManager.getConnection(url, user, password);
             try {
@@ -49,7 +53,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println("\nError with Fetching Column in ComboBox: " + ex.getMessage());
             }
-            
+
         } catch (SQLException e) {
             System.out.println("\nDatabase Connection Error: " + e.getMessage());
         }
@@ -72,7 +76,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
                 colCls = rsmd.getColumnTypeName(i);
 
                 System.out.println("Class Name of Column : " + columnName + " is : " + colCls);
-//              columnCombBx.addItem(columnName);
+                // columnCombBx.addItem(columnName);
                 JCheckBox checkbox = new JCheckBox(columnName);
                 // set the checkbox to selected if the column is in the saved list
                 if (savedSelectedColumns.contains(columnName)) {
@@ -112,6 +116,7 @@ public final class selectColumnForm extends javax.swing.JFrame {
         checkBoxPanel = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         doneColumnBtn = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,11 +124,19 @@ public final class selectColumnForm extends javax.swing.JFrame {
         checkBoxPanel.setLayout(checkBoxPanelLayout);
         checkBoxPanelLayout.setHorizontalGroup(
             checkBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+
             .addGap(0, 386, Short.MAX_VALUE)
         );
         checkBoxPanelLayout.setVerticalGroup(
             checkBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 195, Short.MAX_VALUE)
+
+            .addGap(0, 428, Short.MAX_VALUE)
+        );
+        checkBoxPanelLayout.setVerticalGroup(
+            checkBoxPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 13, Short.MAX_VALUE)
+
         );
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -148,18 +161,30 @@ public final class selectColumnForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+
+                .addGap(29, 29, 29)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(198, 198, 198)
                         .addComponent(doneColumnBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+
                     .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(46, Short.MAX_VALUE))
+
+                    .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 428, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(33, Short.MAX_VALUE))
+
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+
                 .addContainerGap(36, Short.MAX_VALUE)
                 .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -167,6 +192,17 @@ public final class selectColumnForm extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(doneColumnBtn))
                 .addGap(38, 38, 38))
+
+                .addGap(56, 56, 56)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(checkBoxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(doneColumnBtn))
+                .addContainerGap(19, Short.MAX_VALUE))
+
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -211,5 +247,6 @@ public final class selectColumnForm extends javax.swing.JFrame {
     private javax.swing.JButton doneColumnBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
