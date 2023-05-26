@@ -175,7 +175,7 @@ public class selectionForm extends javax.swing.JFrame {
     }
 
     private void openColumnForm() {
-        selectColumnForm sColumnForm = new selectColumnForm(this, dbName, tableName);
+        selectColumnForm1 sColumnForm = new selectColumnForm1(this, dbName, tableName);
         sColumnForm.setVisible(true);
     }
 
